@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Install the APP</title>
+
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.2.0/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.2.0/css/bootstrap-theme.min.css"
+          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+
+    <style>
+        body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #eee;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+
+        <a type="button" id="ipad-install-btn" class="center-block btn btn-success btn-lg glyphicon glyphicon-cloud-download"
+           ota:ios_install_link="${downloadManifestUrl}"> Install the iPad APP</a>
+
+    </div>
+
+</body>
+</html>

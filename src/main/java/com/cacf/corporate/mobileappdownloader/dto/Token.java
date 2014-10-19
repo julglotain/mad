@@ -1,0 +1,17 @@
+package com.cacf.corporate.mobileappdownloader.dto;
+
+/**
+ * Created by cacf on 09/10/14.
+ */
+public class Token {
+
+    private String value;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+}
