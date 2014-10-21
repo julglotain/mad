@@ -1,5 +1,6 @@
-package com.cacf.corporate.mobileappdownloader.controllers;
+package com.cacf.corporate.mobileappdownloader.download;
 
+import com.cacf.corporate.mobileappdownloader.controllers.GetDownloadLinkController;
 import com.cacf.corporate.mobileappdownloader.services.ManifestGenerator;
 import com.cacf.corporate.mobileappdownloader.services.TokenService;
 import org.slf4j.Logger;

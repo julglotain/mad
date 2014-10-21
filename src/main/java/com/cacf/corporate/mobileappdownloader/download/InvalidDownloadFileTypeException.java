@@ -1,4 +1,4 @@
-package com.cacf.corporate.mobileappdownloader.controllers;
+package com.cacf.corporate.mobileappdownloader.download;
 
 /**
  * Created by cacf on 13/10/14.

@@ -1,11 +1,10 @@
-package com.cacf.corporate.mobileappdownloader.controllers;
+package com.cacf.corporate.mobileappdownloader.download;
 
 import com.cacf.corporate.mobileappdownloader.param.ConfigConstants;
 import com.cacf.corporate.mobileappdownloader.services.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.HttpHeaders;

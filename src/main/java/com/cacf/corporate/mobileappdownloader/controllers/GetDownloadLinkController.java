@@ -1,5 +1,6 @@
 package com.cacf.corporate.mobileappdownloader.controllers;
 
+import com.cacf.corporate.mobileappdownloader.download.OTAManifestProducerController;
 import com.cacf.corporate.mobileappdownloader.services.TokenService;
 import com.cacf.corporate.mobileappdownloader.utils.URLBuilder;
 import org.slf4j.Logger;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 /**
