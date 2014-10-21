@@ -1,6 +1,7 @@
 package com.cacf.corporate.mobileappdownloader;
 
 import com.cacf.corporate.mobileappdownloader.config.AppConfiguration;
+import com.cacf.corporate.mobileappdownloader.config.WebMvcConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.WebApplicationInitializer;
@@ -9,7 +10,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.*;
-import java.io.IOException;
 
 /**
  * Created by cacf on 09/10/14.
@@ -31,7 +31,7 @@ public class AppInitializer implements WebApplicationInitializer {
         // Create the dispatcher servlet's Spring application context
         AnnotationConfigWebApplicationContext dispatcherContext =
                 new AnnotationConfigWebApplicationContext();
-        // dispatcherContext.register(DispatcherConfig.class);
+       // dispatcherContext.register(WebMvcConfiguration.class);
 
         // Register and map the dispatcher servlet
         ServletRegistration.Dynamic dispatcher =

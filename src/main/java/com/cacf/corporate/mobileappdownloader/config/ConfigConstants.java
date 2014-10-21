@@ -1,4 +1,4 @@
-package com.cacf.corporate.mobileappdownloader.param;
+package com.cacf.corporate.mobileappdownloader.config;
 
 /**
  * Created by cacf on 17/10/14.

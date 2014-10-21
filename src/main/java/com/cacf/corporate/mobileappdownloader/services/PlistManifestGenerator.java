@@ -2,8 +2,7 @@ package com.cacf.corporate.mobileappdownloader.services;
 
 import com.cacf.corporate.mobileappdownloader.dto.ManifestContextConfig;
 import com.cacf.corporate.mobileappdownloader.dto.ManifestContextConfigBuilder;
-import com.cacf.corporate.mobileappdownloader.param.ConfigConstants;
-import oracle.jrockit.jfr.tools.ConCatRepository;
+import com.cacf.corporate.mobileappdownloader.config.ConfigConstants;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;

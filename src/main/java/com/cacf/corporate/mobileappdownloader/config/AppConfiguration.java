@@ -1,5 +1,6 @@
 package com.cacf.corporate.mobileappdownloader.config;
 
+import com.cacf.corporate.mobileappdownloader.bundles.BundlesStoreConfigurationManagerFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +23,8 @@ public class AppConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(AppConfiguration.class);
 
-    private static final String INTERNAL_CONFIG_PROPERTIES = "config.properties";
-    private static final String EXTERNAL_CONFIG_PROPERTIES_ENV_KEY = "config.file";
+    private static final String INTERNAL_CONFIG_PROPERTIES = "mad-config.properties";
+    private static final String EXTERNAL_CONFIG_PROPERTIES_ENV_KEY = "mad.config.file";
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() throws FileNotFoundException {
@@ -48,7 +49,7 @@ public class AppConfiguration {
 
             } else {
 
-                throw new FileNotFoundException("Specified external config file with path: " + System.getProperty(EXTERNAL_CONFIG_PROPERTIES_ENV_KEY) +  " doesn't exist.");
+                throw new FileNotFoundException("Specified external config file with path: " + System.getProperty(EXTERNAL_CONFIG_PROPERTIES_ENV_KEY) + " doesn't exist.");
 
             }
 
@@ -56,6 +57,11 @@ public class AppConfiguration {
 
         return configurer;
 
+    }
+
+    @Bean
+    public BundlesStoreConfigurationManagerFactoryBean bundlesAppsConfigurationStoreFactoryBean() {
+        return new BundlesStoreConfigurationManagerFactoryBean();
     }
 
 }

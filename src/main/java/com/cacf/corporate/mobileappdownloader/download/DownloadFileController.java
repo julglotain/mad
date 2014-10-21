@@ -1,6 +1,6 @@
 package com.cacf.corporate.mobileappdownloader.download;
 
-import com.cacf.corporate.mobileappdownloader.param.ConfigConstants;
+import com.cacf.corporate.mobileappdownloader.config.ConfigConstants;
 import com.cacf.corporate.mobileappdownloader.services.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
