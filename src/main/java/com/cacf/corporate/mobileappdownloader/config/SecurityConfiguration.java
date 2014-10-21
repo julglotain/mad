@@ -1,5 +1,6 @@
 package com.cacf.corporate.mobileappdownloader.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,21 +20,21 @@ import javax.inject.Inject;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Inject
-    private Environment env;
+    private static final String USERNAME_CONFIG_KEY = "${mad.username}";
+    private static final String PASSWORD_CONFIG_KEY = "${mad.password}";
 
-    private static final String USERNAME_CONFIG_KEY = "mad.username";
-    private static final String PASSWORD_CONFIG_KEY = "mad.password";
+    @Value(USERNAME_CONFIG_KEY)
+    private String usernameToUse;
+
+    @Value(PASSWORD_CONFIG_KEY)
+    private String passwordToUse;
 
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-        String user = env.getProperty(USERNAME_CONFIG_KEY,"u");
-        String password = env.getProperty(PASSWORD_CONFIG_KEY,"p");
-
         auth
                 .inMemoryAuthentication()
-                .withUser(user).password(password).roles("DOWNLOADER");
+                .withUser(usernameToUse).password(passwordToUse).roles("DOWNLOADER");
     }
 
     @Override
@@ -50,6 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/download").authenticated()
+                .antMatchers("/download/").authenticated()
                 .and()
                 .csrf().disable()
                 .formLogin()
