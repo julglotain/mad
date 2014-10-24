@@ -1,9 +1,9 @@
 package com.cacf.corporate.mobileappdownloader.bundles;
 
 import com.cacf.corporate.mobileappdownloader.bundles.domain.ApplicationConfiguration;
-import com.cacf.corporate.mobileappdownloader.bundles.domain.Bundle;
+import com.cacf.corporate.mobileappdownloader.bundles.domain.BundleConfiguration;
 import com.cacf.corporate.mobileappdownloader.bundles.domain.BundlesStoreConfiguration;
-import com.cacf.corporate.mobileappdownloader.bundles.domain.Profile;
+import com.cacf.corporate.mobileappdownloader.bundles.domain.ProfileConfiguration;
 import com.cacf.corporate.mobileappdownloader.marshalling.XmlMarshaller;
 import com.cacf.corporate.mobileappdownloader.marshalling.XmlMarshallerConfigurer;
 
@@ -18,16 +18,18 @@ public class BundlesStoreConfigurationXmlMarshallerConfigurer implements XmlMars
         instance.registerAlias("bundles", BundlesStoreConfiguration.class);
         instance.addImplicitCollection(BundlesStoreConfiguration.class, "bundlesList");
 
-        instance.registerAlias("bundle", Bundle.class);
-        instance.useAttributeFor(Bundle.class, "identifier");
-        instance.addImplicitCollection(Bundle.class, "profilesList");
+        instance.registerAlias("bundle", BundleConfiguration.class);
+        instance.useAttributeFor(BundleConfiguration.class, "identifier");
+        instance.useAttributeFor(BundleConfiguration.class, "name");
+        instance.addImplicitCollection(BundleConfiguration.class, "profilesList");
 
-        instance.registerAlias("profile", Profile.class);
-        instance.useAttributeFor(Profile.class, "id");
-        instance.useAttributeFor(Profile.class, "identifierSuffix");
-        instance.addImplicitCollection(Profile.class, "appsConfigList");
+        instance.registerAlias("profile", ProfileConfiguration.class);
+        instance.useAttributeFor(ProfileConfiguration.class, "id");
+        instance.useAttributeFor(ProfileConfiguration.class, "identifierSuffix");
+        instance.addImplicitCollection(ProfileConfiguration.class, "appsConfigList");
 
         instance.registerAlias("application", ApplicationConfiguration.class);
+        instance.registerAlias("fileLocations",ApplicationConfiguration.FilesURILocations.class);
 
     }
 

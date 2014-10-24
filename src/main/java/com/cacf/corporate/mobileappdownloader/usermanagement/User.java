@@ -1,16 +1,25 @@
 package com.cacf.corporate.mobileappdownloader.usermanagement;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.Set;
 
 /**
  * Created by jug on 21/10/2014.
  */
-public class User {
+public class User implements UserDetails {
 
     private String username;
     private String password;
     private Set<String> bundles;
     private Set<String> profiles;
+    private Set<GrantedAuthority> authorities;
+
+    public void setAuthorities(Set<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
 
     public String getUsername() {
         return username;
@@ -53,5 +62,30 @@ public class User {
         sb.append(", profiles=").append(profiles);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

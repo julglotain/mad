@@ -15,22 +15,16 @@ public class ManifestContextConfig {
 
     private String proxyDlLargeIconUrl;
 
-    private String token;
-
-    private static final String TOKENIZED_TOKEN_PLACEHOLDER = "{token}";
-
-    public ManifestContextConfig(String appBundleIdentifier, String appTitle, String proxyDlAppUrl, String proxyDlSmallIconUrl, String proxyDlLargeIconUrl, String token) {
+    public ManifestContextConfig(String appBundleIdentifier, String appTitle, String proxyDlAppUrl, String proxyDlSmallIconUrl, String proxyDlLargeIconUrl) {
         this.appBundleIdentifier = appBundleIdentifier;
         this.appTitle = appTitle;
         this.proxyDlAppUrl = proxyDlAppUrl;
         this.proxyDlSmallIconUrl = proxyDlSmallIconUrl;
         this.proxyDlLargeIconUrl = proxyDlLargeIconUrl;
-        this.token = token;
     }
 
     public String getAppBundleIdentifier() {
         return appBundleIdentifier;
-
     }
 
     public String getAppTitle() {
@@ -38,18 +32,14 @@ public class ManifestContextConfig {
     }
 
     public String getProxyDlAppUrl() {
-        return proxyDlAppUrl.replace(TOKENIZED_TOKEN_PLACEHOLDER,token);
+        return proxyDlAppUrl;
     }
 
     public String getProxyDlSmallIconUrl() {
-        return proxyDlSmallIconUrl.replace(TOKENIZED_TOKEN_PLACEHOLDER,token);
+        return proxyDlSmallIconUrl;
     }
 
     public String getProxyDlLargeIconUrl() {
-        return proxyDlLargeIconUrl.replace(TOKENIZED_TOKEN_PLACEHOLDER,token);
-    }
-
-    public String getToken() {
-        return token;
+        return proxyDlLargeIconUrl;
     }
 }

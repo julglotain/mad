@@ -7,14 +7,38 @@ import java.util.Set;
  */
 public class BundlesStoreConfiguration {
 
-    private Set<Bundle> bundlesList;
+    private Set<BundleConfiguration> bundlesList;
 
-    public Set<Bundle> getBundlesList() {
+    private String availableProfiles;
+
+    public Set<BundleConfiguration> getBundlesList() {
         return bundlesList;
     }
 
-    public void setBundlesList(Set<Bundle> bundlesList) {
+    public void setBundlesList(Set<BundleConfiguration> bundlesList) {
         this.bundlesList = bundlesList;
     }
+
+    public String getAvailableProfiles() {
+        return availableProfiles;
+    }
+
+    public void setAvailableProfiles(String availableProfiles) {
+        this.availableProfiles = availableProfiles;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("BundlesStoreConfiguration{");
+        sb.append("bundlesList=").append(bundlesList);
+        sb.append('}');
+        return sb.toString();
+
+    }
+
+    public String[] getAvailableProfile() {
+        return this.getAvailableProfiles().split(",");
+    }
+
 
 }

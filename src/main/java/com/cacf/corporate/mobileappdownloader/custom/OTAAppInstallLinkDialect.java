@@ -32,7 +32,7 @@ public class OTAAppInstallLinkDialect extends AbstractDialect {
 
     @Override
     public String getPrefix() {
-        return "ota";
+        return null;
     }
 
     @Override
@@ -41,19 +41,6 @@ public class OTAAppInstallLinkDialect extends AbstractDialect {
         final Set<IDocTypeResolutionEntry> newDocTypeResolutionEntries = new LinkedHashSet<>();
         newDocTypeResolutionEntries.add(APPLE_PROPERTY_LIST_DOC_TYPE_RESOLUTION_ENTRY);
         return newDocTypeResolutionEntries;
-
-    }
-
-    @Override
-    public Set<IProcessor> getProcessors() {
-        Set<IProcessor> processors = new HashSet<>();
-        processors.add(new IOSDownloadAppLinkProcessor());
-        return processors;
-    }
-
-    public static void main(String[] args) {
-
-
 
     }
 

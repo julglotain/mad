@@ -1,11 +1,12 @@
 package com.cacf.corporate.mobileappdownloader.controllers;
 
-import com.cacf.corporate.mobileappdownloader.bundles.BundlesStoreConfigurationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by cacf on 09/10/14.
@@ -13,15 +14,16 @@ import javax.inject.Inject;
 @Controller
 public class LoginController {
 
-    @Inject
-    private BundlesStoreConfigurationManager manager;
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView index(final HttpServletRequest request) {
 
-    @RequestMapping(value="/login",method = RequestMethod.GET)
-    public String index(){
+        ModelAndView loginView = new ModelAndView("login");
 
-        manager.getConfig();
+        if(request.getParameterMap().containsKey("error")){
+            loginView.addObject("invalidCredentials",true);
+        }
 
-        return "login";
+        return loginView;
     }
 
 }

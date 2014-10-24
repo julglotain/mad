@@ -1,17 +1,21 @@
 package com.cacf.corporate.mobileappdownloader.config;
 
-import com.cacf.corporate.mobileappdownloader.bundles.BundlesStoreConfigurationManagerFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.StringUtils;
 
+import javax.inject.Inject;
 import java.io.FileNotFoundException;
 
 /**
@@ -59,9 +63,5 @@ public class AppConfiguration {
 
     }
 
-    @Bean
-    public BundlesStoreConfigurationManagerFactoryBean bundlesAppsConfigurationStoreFactoryBean() {
-        return new BundlesStoreConfigurationManagerFactoryBean();
-    }
 
 }

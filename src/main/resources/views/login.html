@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Install the APP</title>
+    <title>Please sign in to download an app</title>
 
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.2.0/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -62,6 +62,7 @@
             <h2 class="form-signin-heading">Please sign in</h2>
             <input type="text" class="form-control" placeholder="Username" name="username" required="" autofocus="" />
             <input type="password" class="form-control" placeholder="Password" name="password" required="" />
+            <p th:if="${invalidCredentials}" style="color: red;">Invalid credentials</p>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
 

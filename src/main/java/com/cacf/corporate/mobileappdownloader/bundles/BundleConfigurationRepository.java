@@ -1,9 +1,11 @@
-package com.cacf.corporate.mobileappdownloader.bundles.domain;
+package com.cacf.corporate.mobileappdownloader.bundles;
 
+import com.cacf.corporate.mobileappdownloader.bundles.domain.BundlesStoreConfiguration;
 import com.cacf.corporate.mobileappdownloader.marshalling.XmlMarshaller;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
@@ -15,27 +17,42 @@ import java.io.IOException;
 /**
  * Created by jug on 20/10/2014.
  */
+@Component
 public class BundleConfigurationRepository {
 
     private static final Logger log = LoggerFactory.getLogger(BundleConfigurationRepository.class);
 
-    private XmlMarshaller marshaller;
-
-    private Resource storeSource;
-
+    // holder for bundle configuration
     private BundlesStoreConfiguration storeConfigurationHolder;
 
-    public BundleConfigurationRepository(XmlMarshaller xmlMarshaller, Resource res){
-        this.marshaller = xmlMarshaller;
-        this.storeSource = res;
-    }
+    @Inject
+    private XmlMarshaller marshaller;
 
-    public void loadConfiguration() throws IOException {
+    @Inject
+    @Qualifier("bundlesAppsStore")
+    private Resource storeSource;
+
+    private void loadConfiguration() throws IOException {
         this.storeConfigurationHolder = (BundlesStoreConfiguration) marshaller.fromXML(storeSource.getFile());
     }
 
     public BundlesStoreConfiguration getConfig() {
+        if(storeConfigurationHolder==null){
+            try {
+                loadConfiguration();
+            } catch (IOException e) {
+                log.error("Erreur lors de la récupération de la configuration des bundles d'apps.",e);
+            }
+        }
         return storeConfigurationHolder;
+    }
+
+    public void forceReloading(){
+        try {
+            loadConfiguration();
+        } catch (IOException e) {
+            log.error("Erreur lors de la récupération de la configuration des bundles d'apps.",e);
+        }
     }
 
     public void setConfig(BundlesStoreConfiguration config) {
@@ -54,7 +71,7 @@ public class BundleConfigurationRepository {
 
             } catch (IOException ex) {
 
-                log.error("New configuration has not been persisted in store",ex);
+                log.error("New configuration has not been persisted in store", ex);
 
             }
 

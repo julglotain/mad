@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Created by jug on 20/10/2014.
  */
-public class Profile {
+public class ProfileConfiguration {
 
     private String id;
 
@@ -42,8 +42,8 @@ public class Profile {
         final StringBuffer sb = new StringBuffer("Profile{");
         sb.append("id='").append(id).append('\'');
         sb.append(", identifierSuffix='").append(identifierSuffix).append('\'');
+        sb.append(", appsConfigList=").append(appsConfigList);
         sb.append('}');
         return sb.toString();
     }
-
 }

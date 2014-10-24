@@ -1,0 +1,58 @@
+# INSTALLATION
+
+- Copier les différents fichiers de /conf-sample et les placer dans un répertoire
+
+- Editer les propriétées du fichier mad-config.properties et renseigner les paths des fichiers de configuration apps-bundle.xml et users-store.properties
+
+- Editer les propriétés des fichiers de configuration apps-store.xml et users-store.properties pour une configuration initiale
+
+- Lancer le daemon Tomcat avec la variable d'environnement -Dmad.config.file=/path/to/mad-config.properties
+
+
+Exemple de configuration :
+
+    ####################################################################
+    #
+    #   ** GLOBAL **
+    #
+    #   * Les noms d'utilisateur sont référencés sous le path 'mad.user'
+    #   * Ils sont case-censitive
+    #   * Le password est encodé avec MD5
+    #   * Ci dessous sont référencés les différents profiles du référentiel
+    #
+    #
+    ####################################################################
+
+    ####################################################################
+    # User Admin :
+    #
+    #   * A ne modifier sous aucun pretexte
+    #   * Possede les droits d'acces sur tous les profiles et bundles
+    #
+    ####################################################################
+    mad.user.admin.userpassword=44a919f32c365cd45625efdeacd80c40
+    mad.user.admin.profiles=ALL
+    mad.user.admin.bundles=ALL
+    mad.user.admin.authorities=ADMIN,DOWNLOAD
+
+    ####################################################################
+    # User CACF-01
+    #
+    #   * CACF-01 a acces aux apps du bundle com.agos.credit.app
+    #   * CACF-01 a acces aux apps de profiles DEV et RCT
+    #   * Il pour seul possibilité le download des apps de ces profiles
+    #     et bundle
+    #
+    ####################################################################
+    mad.user.cacf-01.userpassword=44a919f32c365cd45625efdeacd80c40
+    mad.user.cacf-01.profiles=DEV,RCT
+    mad.user.cacf-01.bundles=com.agos.credit.app
+    mad.user.cacf-01.authorities=DOWNLOAD
+
+    ####################################################################
+    # User CACF-02
+    ####################################################################
+    mad.user.cacf-02.userpassword=44a919f32c365cd45625efdeacd80c40
+    mad.user.cacf-02.profiles=PROD
+    mad.user.cacf-02.bundles=com.creditplus.credit.app
+    mad.user.cacf-02.authorities=DOWNLOAD

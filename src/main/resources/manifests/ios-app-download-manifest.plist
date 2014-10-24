@@ -13,7 +13,8 @@
 					<key>url</key>
 					<string th:text="${context.proxyDlAppUrl}">app download url ...</string>
 				</dict>
-				<dict>
+
+				<dict th:if="${context.proxyDlLargeIconUrl} != null">
 					<key>kind</key>
 					<string>full-size-image</string>
 					<key>needs-shine</key>
@@ -21,7 +22,8 @@
 					<key>url</key>
 					<string th:text="${context.proxyDlLargeIconUrl}">app large icon download url ...</string>
 				</dict>
-				<dict>
+
+				<dict th:if="${context.proxyDlSmallIconUrl} != null">
 					<key>kind</key>
 					<string>display-image</string>
 					<key>needs-shine</key>
@@ -29,6 +31,7 @@
 					<key>url</key>
 					<string th:text="${context.proxyDlSmallIconUrl}">app small icon download url ...</string>
 				</dict>
+
 			</array>
 			<key>metadata</key>
 			<dict>

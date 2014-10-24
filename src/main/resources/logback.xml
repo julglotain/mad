@@ -35,6 +35,7 @@
     <logger name="org.springframework.security" level="WARN"/>
     <logger name="org.springframework.cache" level="WARN"/>
     <logger name="org.thymeleaf" level="WARN"/>
+    <logger name="ma.glasnost.orika" level="WARN"/>
 
     <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>

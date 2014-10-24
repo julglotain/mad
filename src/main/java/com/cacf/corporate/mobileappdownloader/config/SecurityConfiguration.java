@@ -1,8 +1,10 @@
 package com.cacf.corporate.mobileappdownloader.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.cacf.corporate.mobileappdownloader.security.AuthorityBasedRedirectionSuccessHandler;
+import com.cacf.corporate.mobileappdownloader.usermanagement.GrantedAuthorityImpl;
+import com.cacf.corporate.mobileappdownloader.usermanagement.UserManager;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
@@ -20,21 +22,14 @@ import javax.inject.Inject;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private static final String USERNAME_CONFIG_KEY = "${mad.username}";
-    private static final String PASSWORD_CONFIG_KEY = "${mad.password}";
-
-    @Value(USERNAME_CONFIG_KEY)
-    private String usernameToUse;
-
-    @Value(PASSWORD_CONFIG_KEY)
-    private String passwordToUse;
+    @Inject
+    private UserManager userManager;
 
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth
-                .inMemoryAuthentication()
-                .withUser(usernameToUse).password(passwordToUse).roles("DOWNLOADER");
+        auth.userDetailsService(userManager).passwordEncoder(new Md5PasswordEncoder());
+
     }
 
     @Override
@@ -51,13 +46,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/download").authenticated()
-                .antMatchers("/download/").authenticated()
+                .antMatchers("/download.json").authenticated()
+                .antMatchers("/admin").hasAuthority(GrantedAuthorityImpl.ADMIN.getAuthority())
+                .antMatchers("/admin/**").hasAuthority(GrantedAuthorityImpl.ADMIN.getAuthority())
+                .and()
+                .exceptionHandling().accessDeniedPage("/accessDenied")
                 .and()
                 .csrf().disable()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login/auth")
-                .defaultSuccessUrl("/download",true)
+                .successHandler(new AuthorityBasedRedirectionSuccessHandler())
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll();

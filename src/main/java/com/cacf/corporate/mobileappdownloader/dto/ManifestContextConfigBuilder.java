@@ -6,7 +6,6 @@ public class ManifestContextConfigBuilder {
     private String proxyDlAppUrl;
     private String proxyDlSmallIconUrl;
     private String proxyDlLargeIconUrl;
-    private String token;
 
     public ManifestContextConfigBuilder withAppBundleIdentifier(String appBundleIdentifier) {
         this.appBundleIdentifier = appBundleIdentifier;
@@ -33,12 +32,8 @@ public class ManifestContextConfigBuilder {
         return this;
     }
 
-    public ManifestContextConfigBuilder withToken(String token) {
-        this.token = token;
-        return this;
-    }
 
-    public ManifestContextConfig createManifestContextConfig() {
-        return new ManifestContextConfig(appBundleIdentifier, appTitle, proxyDlAppUrl, proxyDlSmallIconUrl, proxyDlLargeIconUrl, token);
+    public ManifestContextConfig build() {
+        return new ManifestContextConfig(appBundleIdentifier, appTitle, proxyDlAppUrl, proxyDlSmallIconUrl, proxyDlLargeIconUrl);
     }
 }
