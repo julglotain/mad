@@ -24,6 +24,20 @@
             .panel-heading {
                 min-height: 40px;
             }
+            .preview-icon {
+                max-width: 50px;
+            }
+            .default-preview-icon {
+                color: rgba(0,0,0,.3);
+                font-size: 2.6em;
+                margin-top: 5px;
+                width: 50px;
+                text-align: center;
+            }
+            .app-desc {
+                margin-left: 20px;
+                font-size: 1.2em;
+            }
 
         </style>
 
@@ -47,10 +61,20 @@
                         <div class="panel-body">
                             <div class="apps-list" ng-repeat='app in profile.applications'>
                                 <div class="row">
-                                    <div class="col-xs-9 col-sm-10 col-md-8">
-                                        <strong>{{app.title}} - {{app.version}}</strong><br/>{{app.desc}}
+                                    <div class="col-xs-10 col-sm-10 col-md-10">
+                                        <div class="pull-left" ng-switch="" on="app.dlPreviewIconUrl || 'null'">
+                                            <div ng-switch-when="null">
+                                                <span class="default-preview-icon glyphicon glyphicon-question-sign"></span>
+                                            </div>
+                                            <div ng-switch-default="">
+                                                <img class="preview-icon" ng-src="{{app.dlPreviewIconUrl}}" />
+                                            </div>
+                                        </div>
+                                        <div class="pull-left app-desc">
+                                            <strong>{{app.title}} - {{app.version}}</strong><br/>{{app.desc}}
+                                        </div>
                                     </div>
-                                    <div class="col-xs-3 col-sm-2 col-md-4">
+                                    <div class="col-xs-2 col-sm-2 col-md-2">
                                         <a type="button" ng-click="downloadManifest(app.dlManifestUrl)"
                                             class="pull-right dl_manifest_btn btn btn-success glyphicon glyphicon-cloud-download"></a>
                                     </div>

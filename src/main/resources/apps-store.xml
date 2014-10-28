@@ -1,19 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bundles availablesProfiles="DEV,RCT,PROD">
+<!--
+
+    Constitue et référence le store des applications disponibles au téléchargement.
+
+    L'attribut @availablesProfiles précise la liste des profiles disponibles et restreint l'ajout d'une app dans un profile non disponible.
+
+-->
+<bundles availableProfiles="DEV,RCT,PROD">
+    <!--
+
+        Chaque bundle possède un identifier unique, il s'agit en realité d'un prefix et ne constitue pas
+        un nom de bundle complet, celui-ci est complété par la valeur de l'attribut d'un de ses profiles
+        enfants :
+
+        Par exemple ci dessous l'application MobSubDev en version 1.0 sera identifiée par un de bundle égale à com.agos.credit.app.dev
+
+        Attributs:
+
+            @identifier = base de nom d'un bundle, obligatoire
+            @name = Pour affichage et référencage User friendly d'un bundle, pas obligatoire mais conseillé
+
+
+    -->
     <bundle identifier="com.agos.credit.app" name="AGOS MobSub app">
+
+        <!--
+
+            Référence un profile dans un bundle, un profile correspond au type de build d'une app (app de dev, app de prod, etc..)
+            Il référence les différentes versions accessibles d'une applications pour le profile donné.
+
+            Attributs:
+
+                @id = identifiant unique par bundle, est restreint à la liste des profiles contenus dans l'attribut @availableProfiles de <bundles/>, obligatoire
+                @identifierSuffix = suffix pour le nom complet du bundle de l'application, obligatoire
+
+        -->
         <profile id="DEV" identifierSuffix="dev">
+
+            <!--
+
+                Chaque profile contient une liste de balises <application />
+
+            -->
+
             <application>
+
+                <!--
+                    Titre obligatoire de l'application, il correspond au nom affiché de l'application installée
+                -->
                 <title>MobSubDev</title>
+
+                <!-- Version de l'app, obligatoire -->
                 <version>1.0</version>
+
+                <!-- Description de l'application affichée sur le store, non obligatoire -->
                 <desc>MobSub v1.0, for tests purpose.</desc>
+
+                <!--
+
+                    Emplacements des différents fichiers pour le téléchargement de l'application, obligatoire
+
+                    Les chemins des fichiers sont préfixés par 'file:' s'ils sont sur le meme filesystem que le serveur
+                    hbergeant l'app store.
+
+                    Ils peuvent également êtres stockés à distance sur un serveur web et seront alors préfixés avec http://
+
+                    //TODO: voir si support FTP possible
+
+                -->
                 <filesURILocations>
+
+                    <!-- le chemin vers l'app, le seul obligatoire -->
                     <app>file:/Users/jug/Development/Pro/tmp/mad/apps_store/MobSubTest-1.0.ipa</app>
+
+                    <!--
+
+                        Spécifie les chemins des icons de l'application, non obligatoire, balise <icons/> peut etre omise,
+                        ou seule l'une des deux icones peut etre omise ou les deux
+
+                     -->
                     <icons>
                         <small>file:/Users/jug/Development/Pro/tmp/mad/apps_store/mobsub-small-icon.png</small>
                         <large>file:/Users/jug/Development/Pro/tmp/mad/apps_store/mobsub-large-icon.png</large>
                     </icons>
+
                 </filesURILocations>
+
             </application>
+
             <application>
                 <title>MobSub sans icon</title>
                 <version>0.9</version>
@@ -22,7 +96,9 @@
                     <app>file:/Users/jug/Development/tmp/app_repo/MobSubTest-1.0.ipa</app>
                 </filesURILocations>
             </application>
+
         </profile>
+
         <profile id="RCT" identifierSuffix="rct">
             <application>
                 <title>MobSubTest</title>
@@ -45,6 +121,7 @@
                 </filesURILocations>
             </application>
         </profile>
+
         <profile id="PROD" identifierSuffix="prod">
             <application>
                 <title>MobSub</title>
@@ -61,10 +138,11 @@
         </profile>
     </bundle>
 
-      <!--
-    <bundle identifier="com.creditplus.credit.app" name="CreditPlus MobSub app">
+    <!--
+    <bundle identifier="com.creditplus.credit.app" name="CREDITPLUS MobSub app">
 
+         ....
 
     </bundle>
-      -->
+    -->
 </bundles>

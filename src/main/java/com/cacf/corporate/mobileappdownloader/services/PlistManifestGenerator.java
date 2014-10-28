@@ -9,7 +9,6 @@ import com.cacf.corporate.mobileappdownloader.dto.ManifestContextConfigBuilder;
 import com.cacf.corporate.mobileappdownloader.utils.ProtectedResourceURLBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.context.Context;
@@ -17,7 +16,9 @@ import org.thymeleaf.context.IContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -38,10 +39,11 @@ public class PlistManifestGenerator implements ManifestGenerator {
     private TokenService tokenService;
 
     @Inject
-    private Environment env;
-
-    @Inject
     private HttpServletRequest request;
+    @Inject
+    private HttpServletResponse response;
+    @Inject
+    private ServletContext servletContext;
 
 
     @Override
@@ -74,15 +76,15 @@ public class PlistManifestGenerator implements ManifestGenerator {
         contextConfigBuilder.withProxyDlAppUrl(resourceURLBuilder.build(builderPathValues));
 
         // build icons dl url if exist
-        if(appConfig.getThird().getFilesURILocations().getIcons() != null){
+        if (appConfig.getThird().getFilesURILocations().getIcons() != null) {
 
             ApplicationConfiguration.FilesURILocations.Icons icons = appConfig.getThird().getFilesURILocations().getIcons();
 
-            if(!StringUtils.isEmpty(icons.getSmall())){
+            if (!StringUtils.isEmpty(icons.getSmall())) {
                 builderPathValues.put("type", DownloadFileType.SMALL_ICON.getValue());
                 contextConfigBuilder.withProxyDlSmallIconUrl(resourceURLBuilder.build(builderPathValues));
             }
-            if(!StringUtils.isEmpty(icons.getLarge())){
+            if (!StringUtils.isEmpty(icons.getLarge())) {
                 builderPathValues.put("type", DownloadFileType.LARGE_ICON.getValue());
                 contextConfigBuilder.withProxyDlLargeIconUrl(resourceURLBuilder.build(builderPathValues));
             }
@@ -108,10 +110,6 @@ public class PlistManifestGenerator implements ManifestGenerator {
                 .withToken(tokenService.getCurrentToken().getValue());
 
         return builder;
-    }
-
-    private void buildProtecteResourcesUrl(AppConfigurationTriplet appConfig) {
-
     }
 
     private String createHtmlContentFromTemplate(Locale locale, Map<String, Object> variables) {

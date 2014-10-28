@@ -97,4 +97,11 @@ public class BundlesStoreConfigurationManager {
         return bundleIdentifier.substring(bundleIdentifier.lastIndexOf(".") + 1, bundleIdentifier.length());
     }
 
+    public synchronized void addApplication(){
+
+
+
+    }
+
+
 }

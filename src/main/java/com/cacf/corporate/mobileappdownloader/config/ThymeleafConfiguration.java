@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
 import java.util.HashSet;
@@ -44,6 +45,7 @@ public class ThymeleafConfiguration {
 
     @Bean
     public TemplateResolver templateViewsResolver() {
+
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("views/");
         templateResolver.setSuffix(".html");

@@ -1,0 +1,2 @@
+As an admin I want to see the list of apps in order to delete some of them
+As an admin I want add a new app to the store
