@@ -13,9 +13,8 @@ import javax.inject.Inject;
 
 /**
  * Created by jug on 20/10/2014.
- *
+ * <p/>
  * TODO Gérer l'ordre des PROFILES retournés, donner un poids au profile et non un tri alphabetique
- *
  */
 @Component
 public class BundlesStoreConfigurationManager {
@@ -61,17 +60,18 @@ public class BundlesStoreConfigurationManager {
 
         for (BundleConfiguration bundleConf : config.getBundlesList()) {
 
-            if (bundleConf.getIdentifier().equals(bundleIdentifier)) {
+            if (bundleConf.getIdentifier().equals(bundleIdentifier) || bundleConf.getIdentifier().equals(fullBundleIdentifier)) {
 
                 for (ProfileConfiguration profileConf : bundleConf.getProfilesList()) {
 
-                    if(profileConf.getIdentifierSuffix().equals(bundleIdentifierSuffix)){
+                    if ((profileConf.getIdentifierSuffix() != null && profileConf.getIdentifierSuffix().equals(bundleIdentifierSuffix))
+                            || checkIfBundleWithNoIdentifierSuffix(fullBundleIdentifier, bundleConf.getIdentifier(), profileConf.getIdentifierSuffix())) {
 
-                        for(ApplicationConfiguration appConf: profileConf.getAppsConfigList()){
+                        for (ApplicationConfiguration appConf : profileConf.getAppsConfigList()) {
 
-                            if(appConf.getTitle().equals(appTitle) && appConf.getVersion().equals(version)){
+                            if (appConf.getTitle().equals(appTitle) && appConf.getVersion().equals(version)) {
 
-                                return new AppConfigurationTriplet(bundleConf,profileConf,appConf);
+                                return new AppConfigurationTriplet(bundleConf, profileConf, appConf);
 
                             }
 
@@ -87,6 +87,10 @@ public class BundlesStoreConfigurationManager {
 
         return null;
 
+    }
+
+    private boolean checkIfBundleWithNoIdentifierSuffix(String fullBundleIdentifier, String bundleIdentifier, String identifierSuffix) {
+        return fullBundleIdentifier.equals(bundleIdentifier) && identifierSuffix == null;
     }
 
     private String getBundleIdentifier(String bundleIdentifier) {

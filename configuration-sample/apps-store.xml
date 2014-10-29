@@ -32,7 +32,8 @@
             Attributs:
 
                 @id = identifiant unique par bundle, est restreint à la liste des profiles contenus dans l'attribut @availableProfiles de <bundles/>, obligatoire
-                @identifierSuffix = suffix pour le nom complet du bundle de l'application, obligatoire
+                @identifierSuffix = suffix pour le nom complet du bundle de l'application, non obligatoire, dans le cas ou il n'est pas renseigné le bundle aura pour nom
+                                    complet celui du bundle identifier, !!!ATTENTION!!!! il est possible de paramétrer un seul <profile/> sans attr @identifierSuffix par <bundle/>
 
         -->
         <profile id="DEV" identifierSuffix="dev">

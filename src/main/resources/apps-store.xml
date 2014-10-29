@@ -41,11 +41,12 @@
                 <version>0.9</version>
                 <desc>MobSub v9.0, for dev tests purpose.</desc>
                 <filesURILocations>
-                    <app>file:/Users/jug/Development/tmp/app_repo/MobSubTest-1.0.ipa</app>
+                    <app>file:/Users/jug/Development/Pro/tmp/mad/apps_store/MobSubTest-1.0.ipa</app>
+                    <icons></icons>
                 </filesURILocations>
             </application>
         </profile>
-        <profile id="PROD" identifierSuffix="prod">
+        <profile id="PROD">
             <application>
                 <title>MobSub</title>
                 <version>1.0</version>
@@ -61,10 +62,4 @@
         </profile>
     </bundle>
 
-      <!--
-    <bundle identifier="com.creditplus.credit.app" name="CreditPlus MobSub app">
-
-
-    </bundle>
-      -->
 </bundles>

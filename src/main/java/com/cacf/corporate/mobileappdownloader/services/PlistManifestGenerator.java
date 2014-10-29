@@ -53,7 +53,7 @@ public class PlistManifestGenerator implements ManifestGenerator {
     public String generate(AppConfigurationTriplet appConfig) {
 
         ManifestContextConfigBuilder contextConfigBuilder = new ManifestContextConfigBuilder()
-                .withAppBundleIdentifier(appConfig.getFirst().getIdentifier() + "." + appConfig.getSecond().getIdentifierSuffix())
+                .withAppBundleIdentifier(appConfig.getFirst().getIdentifier() + resolveBundleSuffix(appConfig.getSecond().getIdentifierSuffix()))
                 .withAppTitle(appConfig.getThird().getTitle());
 
         ProtectedResourceURLBuilder resourceURLBuilder = buildBaseResourcesUrl();
@@ -61,7 +61,8 @@ public class PlistManifestGenerator implements ManifestGenerator {
         resourceURLBuilder.setPath(DownloadFileController.DOWNLOAD_APP_FILE_ROUTE_PATH);
 
         Map<String, String> builderPathValues = new HashMap<>();
-        builderPathValues.put("bundle", appConfig.getFirst().getIdentifier() + "." + appConfig.getSecond().getIdentifierSuffix());
+        builderPathValues.put("bundle", appConfig.getFirst().getIdentifier() + resolveBundleSuffix(appConfig.getSecond().getIdentifierSuffix()));
+
         try {
             builderPathValues.put("app", URLEncoder.encode(appConfig.getThird().getTitle(), "utf-8"));
         } catch (UnsupportedEncodingException e) {
@@ -74,15 +75,15 @@ public class PlistManifestGenerator implements ManifestGenerator {
         contextConfigBuilder.withProxyDlAppUrl(resourceURLBuilder.build(builderPathValues));
 
         // build icons dl url if exist
-        if(appConfig.getThird().getFilesURILocations().getIcons() != null){
+        if (appConfig.getThird().getFilesURILocations().getIcons() != null) {
 
             ApplicationConfiguration.FilesURILocations.Icons icons = appConfig.getThird().getFilesURILocations().getIcons();
 
-            if(!StringUtils.isEmpty(icons.getSmall())){
+            if (!StringUtils.isEmpty(icons.getSmall())) {
                 builderPathValues.put("type", DownloadFileType.SMALL_ICON.getValue());
                 contextConfigBuilder.withProxyDlSmallIconUrl(resourceURLBuilder.build(builderPathValues));
             }
-            if(!StringUtils.isEmpty(icons.getLarge())){
+            if (!StringUtils.isEmpty(icons.getLarge())) {
                 builderPathValues.put("type", DownloadFileType.LARGE_ICON.getValue());
                 contextConfigBuilder.withProxyDlLargeIconUrl(resourceURLBuilder.build(builderPathValues));
             }
@@ -95,6 +96,14 @@ public class PlistManifestGenerator implements ManifestGenerator {
         variables.put("context", manifestContextConfig);
 
         return createHtmlContentFromTemplate(Locale.ENGLISH, variables);
+    }
+
+    private String resolveBundleSuffix(String bundleIdentifierProfileSuffix) {
+        if (bundleIdentifierProfileSuffix != null) {
+            return "." + bundleIdentifierProfileSuffix;
+        } else {
+            return "";
+        }
     }
 
     private ProtectedResourceURLBuilder buildBaseResourcesUrl() {

@@ -92,7 +92,7 @@ public class OTAManifestProducerController {
     @ExceptionHandler(ApplicationConfigurationNotFoundException.class)
     public String applicationNotFoundHandler(ApplicationConfigurationNotFoundException ex) {
 
-        log.error("Application not found: ", ex);
+        log.error("Application not found.");
 
         return "applicationNotFound";
 
@@ -101,7 +101,7 @@ public class OTAManifestProducerController {
     @ExceptionHandler(InvalidTokenException.class)
     public String invalidToken(InvalidTokenException ex) {
 
-        log.error("Invalid token: ", ex);
+        log.error("Invalid token.");
 
         return "invalidToken";
 
