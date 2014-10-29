@@ -1,5 +1,7 @@
 package com.cacf.corporate.mobileappdownloader.bundles.domain;
 
+import javax.persistence.Entity;
+
 /**
  * Created by jug on 19/10/2014.
  */

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="adminApp">
 <head>
     <meta charset="UTF-8"/>
@@ -15,6 +15,30 @@
             padding-bottom: 40px;
             background-color: #eee;
         }
+
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            background: red;
+            cursor: inherit;
+            display: block;
+        }
+        input[readonly] {
+            background-color: white !important;
+            cursor: text !important;
+        }
+
     </style>
 
 </head>
@@ -33,42 +57,52 @@
                     <h3 class="panel-title">Ajout d'une application</h3>
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form">
+                    <form class="form-horizontal" role="form" ng-controller="AddNewAppFormCtrl" ng-submit="submit()">
                         <div class="form-group">
                             <label for="appTitle" class="col-sm-2 control-label">Titre</label>
-
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="appTitle" name="title" placeholder="Titre"/>
+                                <input type="text" class="form-control" id="appTitle" name="title" ng-model="formData.title" placeholder="Titre"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="version" class="col-sm-2 control-label">Version</label>
-
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="version" placeholder="Version"/>
+                                <input type="text" class="form-control" id="version" name="version" ng-model="formData.version" placeholder="Version"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="version" class="col-sm-2 control-label">Version</label>
+                            <label for="bundle" class="col-sm-2 control-label">Bundle</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="version" placeholder="Version"/>
+                                <input type="text" class="form-control" id="bundle" name="bundle" ng-model="formData.bundle" placeholder="Bundle"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="version" class="col-sm-2 control-label">Version</label>
-
+                            <label for="version" class="col-sm-2 control-label">Profile</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="version" placeholder="Version"/>
+                                <input type="text" class="form-control" id="profile" name="profile" ng-model="formData.profileId" placeholder="Profile"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="version" class="col-sm-2 control-label">Version</label>
-
+                            <label for="app" class="col-sm-2 control-label">App</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="version" placeholder="Version"/>
+                                <input type="file" class="form-control" id="app" name="app" ng-file-model="formData.app" placeholder="App"/>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="small_icon" class="col-sm-2 control-label">Small icon</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="small_icon" name="small_icon" ng-file-model="formData.smallIcon" placeholder="Small icon"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="large_icon" class="col-sm-2 control-label">Small icon</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="large_icon" name="large_icon" ng-file-model="formData.largeIcon" placeholder="Small icon"/>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-default">Ajouter</button>
@@ -86,8 +120,12 @@
                     <h3 class="panel-title">Liste des applications</h3>
                 </div>
                 <div class="panel-body">
-                    <ul ng-repeat='bundle in bundles'>
-                        <li>{{bundle.identifier}}</li>
+                    <ul ng-repeat='app in applications'>
+                        <li>
+                            {{app.title}} {{app.version}}
+                            <a type="button" ng-click="deleteApp(app.title,app.version,$event)"
+                               class="btn btn-danger glyphicon glyphicon-remove-circle" title="delete"></a>
+                        </li>
                     </ul>
                 </div>
             </div>
