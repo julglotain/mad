@@ -105,31 +105,39 @@ public class GetDownloadLinkController {
         builder.setPath(OTAManifestProducerController.DOWNLOAD_APP_MANIFEST_ROUTE_PATH);
 
         Map<String, String> builderPathValues = new HashMap<>();
-        builderPathValues.put("bundle",bundle.getIdentifier() + "." + profile.getIdentifierSuffix());
+        builderPathValues.put("bundle", bundle.getIdentifier() + resolveBundleSuffix(profile.getIdentifierSuffix()));
 
         try {
-            builderPathValues.put("app", URLEncoder.encode(app.getTitle(),"utf-8"));
+            builderPathValues.put("app", URLEncoder.encode(app.getTitle(), "utf-8"));
         } catch (UnsupportedEncodingException e) {
-            log.error("Error when trying to encode app title with value '{}'.",app.getTitle());
+            log.error("Error when trying to encode app title with value '{}'.", app.getTitle());
         }
 
-        builderPathValues.put("version",app.getVersion());
+        builderPathValues.put("version", app.getVersion());
         app.setDlManifestUrl(builder.build(builderPathValues));
 
-        if(app.getDlPreviewIconUrl() != null){
+        if (app.getDlPreviewIconUrl() != null) {
 
             builder.setPath(DownloadFileController.DOWNLOAD_APP_FILE_ROUTE_PATH);
 
-            if(app.getDlPreviewIconUrl().equals("SMALL")){
-                builderPathValues.put("type","SMALL_ICON");
+            if (app.getDlPreviewIconUrl().equals("SMALL")) {
+                builderPathValues.put("type", "SMALL_ICON");
             } else {
-                builderPathValues.put("type","LARGE_ICON");
+                builderPathValues.put("type", "LARGE_ICON");
             }
 
             app.setDlPreviewIconUrl(builder.build(builderPathValues));
         }
 
 
+    }
+
+    private String resolveBundleSuffix(String bundleIdentifierProfileSuffix) {
+        if (bundleIdentifierProfileSuffix != null) {
+            return "." + bundleIdentifierProfileSuffix;
+        } else {
+            return "";
+        }
     }
 
     private ProtectedResourceURLBuilder buildBaseResourcesUrl() {

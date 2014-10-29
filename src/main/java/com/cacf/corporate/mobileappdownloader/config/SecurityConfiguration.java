@@ -46,6 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/download").authenticated()
+                .antMatchers("/download/").authenticated()
                 .antMatchers("/download.json").authenticated()
                 .antMatchers("/admin").hasAuthority(GrantedAuthorityImpl.ADMIN.getAuthority())
                 .antMatchers("/admin/**").hasAuthority(GrantedAuthorityImpl.ADMIN.getAuthority())

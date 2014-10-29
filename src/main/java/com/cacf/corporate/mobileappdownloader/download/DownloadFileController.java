@@ -65,7 +65,7 @@ public class DownloadFileController {
         }
 
         // recherche de la configuration de l'app pour laquelle on souhaite produire un manifest
-        AppConfigurationTriplet appConfig = bundlesStoreConfigurationManager.findBy(bundle, app, version);
+        AppConfigurationTriplet appConfig = bundlesStoreConfigurationManager.findBy(bundle, URLDecoder.decode(app,"utf-8"), version);
 
         if (appConfig == null) {
 
