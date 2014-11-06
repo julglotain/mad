@@ -1,65 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bundles availablesProfiles="DEV,RCT,PROD">
-    <bundle identifier="com.agos.credit.app" name="AGOS MobSub app">
-        <profile id="DEV" identifierSuffix="dev">
-            <application>
-                <title>MobSubDev</title>
-                <version>1.0</version>
-                <desc>MobSub v1.0, for tests purpose.</desc>
-                <filesURILocations>
-                    <app>file:/Users/jug/Development/Pro/tmp/mad/apps_store/MobSubTest-1.0.ipa</app>
-                    <icons>
-                        <small>file:/Users/jug/Development/Pro/tmp/mad/apps_store/mobsub-small-icon.png</small>
-                        <large>file:/Users/jug/Development/Pro/tmp/mad/apps_store/mobsub-large-icon.png</large>
-                    </icons>
-                </filesURILocations>
-            </application>
-            <application>
-                <title>MobSub sans icon</title>
-                <version>0.9</version>
-                <desc>MobSub v9.0, for tests purpose.</desc>
-                <filesURILocations>
-                    <app>file:/Users/jug/Development/tmp/app_repo/MobSubTest-1.0.ipa</app>
-                </filesURILocations>
-            </application>
-        </profile>
-        <profile id="RCT" identifierSuffix="rct">
-            <application>
-                <title>MobSubTest</title>
-                <version>1.0</version>
-                <desc>MobSub v1.0, for dev tests purpose.</desc>
-                <filesURILocations>
-                    <app>file:/Users/jug/Development/Pro/tmp/mad/apps_store/MobSubTest-1.0.ipa</app>
-                    <icons>
-                        <small>file:/Users/jug/Development/Pro/tmp/mad/apps_store/mobsub-small-icon.png</small>
-                        <large>file:/Users/jug/Development/Pro/tmp/mad/apps_store/mobsub-large-icon.png</large>
-                    </icons>
-                </filesURILocations>
-            </application>
-            <application>
-                <title>MobSub sans icon</title>
-                <version>0.9</version>
-                <desc>MobSub v9.0, for dev tests purpose.</desc>
-                <filesURILocations>
-                    <app>file:/Users/jug/Development/Pro/tmp/mad/apps_store/MobSubTest-1.0.ipa</app>
-                    <icons></icons>
-                </filesURILocations>
-            </application>
-        </profile>
-        <profile id="PROD">
-            <application>
-                <title>MobSub</title>
-                <version>1.0</version>
-                <desc>MobSub v1.0, for UAT purpose.</desc>
-                <filesURILocations>
-                    <app>file:/Users/jug/Development/Pro/tmp/mad/apps_store/MobSubTest-1.0.ipa</app>
-                    <icons>
-                        <small>file:/Users/jug/Development/Pro/tmp/mad/apps_store/mobsub-small-icon.png</small>
-                        <large>file:/Users/jug/Development/Pro/tmp/mad/apps_store/mobsub-large-icon.png</large>
-                    </icons>
-                </filesURILocations>
-            </application>
-        </profile>
-    </bundle>
+<!--
 
+    Constitue et référence le store des applications disponibles au téléchargement.
+
+    L'attribut @availablesProfiles précise la liste des profiles disponibles et restreint l'ajout d'une app dans un profile non disponible.
+
+-->
+<bundles availableProfiles="DEV,TEST,RCT,PROD">
+    <!--
+
+        Chaque bundle possède un identifier unique, il s'agit en realité d'un prefix et ne constitue pas
+        un nom de bundle complet, celui-ci est complété par la valeur de l'attribut d'un de ses profiles
+        enfants :
+
+        Par exemple ci dessous l'application MobSubDev en version 1.0 sera identifiée par un de bundle égale à com.agos.credit.app.dev
+
+        Attributs:
+
+            @identifier = base de nom d'un bundle, obligatoire
+            @name = Pour affichage et référencage User friendly d'un bundle, pas obligatoire mais conseillé
+
+
+    -->
+
+
+    <!--
+    <bundle identifier="com.creditplus.credit.app" name="CREDITPLUS MobSub app">
+
+         ....
+
+    </bundle>
+    -->
 </bundles>

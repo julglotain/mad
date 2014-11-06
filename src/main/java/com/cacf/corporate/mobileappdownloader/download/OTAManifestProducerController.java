@@ -32,7 +32,7 @@ public class OTAManifestProducerController {
     private static Logger log = LoggerFactory.getLogger(GetDownloadLinkController.class);
 
     public static final String DOWNLOAD_APP_MANIFEST_ROUTE_PATH =
-            "/dowload/{token}/bundle/{bundle}/app/{app}/version/{version}/manifest.plist";
+            "/download/{token}/bundle/{bundle}/app/{app}/version/{version}/manifest.plist";
 
 
     @Inject

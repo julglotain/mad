@@ -1,5 +1,6 @@
 package com.cacf.corporate.mobileappdownloader.bundles.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,6 +31,9 @@ public class ProfileConfiguration {
     }
 
     public Set<ApplicationConfiguration> getAppsConfigList() {
+        if (appsConfigList == null) {
+            appsConfigList = new HashSet<>();
+        }
         return appsConfigList;
     }
 

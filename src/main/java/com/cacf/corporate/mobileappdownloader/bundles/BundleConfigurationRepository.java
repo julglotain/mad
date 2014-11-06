@@ -33,6 +33,7 @@ public class BundleConfigurationRepository {
     private Resource storeSource;
 
     private void loadConfiguration() throws IOException {
+        log.debug("Load apps store configuration from {}",storeSource.getFile().getAbsolutePath());
         this.storeConfigurationHolder = (BundlesStoreConfiguration) marshaller.fromXML(storeSource.getFile());
     }
 

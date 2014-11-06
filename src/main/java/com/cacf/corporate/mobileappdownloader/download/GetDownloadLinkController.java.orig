@@ -134,7 +134,11 @@ public class GetDownloadLinkController {
     }
 
     private String resolveBundleSuffix(String bundleIdentifierProfileSuffix) {
+<<<<<<< HEAD
+        if (bundleIdentifierProfileSuffix != null) {
+=======
         if (!StringUtils.isEmpty(bundleIdentifierProfileSuffix)) {
+>>>>>>> interfaceAdmin
             return "." + bundleIdentifierProfileSuffix;
         } else {
             return "";

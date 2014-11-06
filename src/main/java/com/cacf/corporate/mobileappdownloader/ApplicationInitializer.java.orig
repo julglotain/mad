@@ -1,6 +1,21 @@
 package com.cacf.corporate.mobileappdownloader;
 
 import com.cacf.corporate.mobileappdownloader.config.AppConfiguration;
+<<<<<<< HEAD
+import com.cacf.corporate.mobileappdownloader.config.WebMvcConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.*;
+
+/**
+ * Created by cacf on 09/10/14.
+=======
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -11,13 +26,17 @@ import javax.servlet.ServletRegistration;
 
 /**
  * Created by jug on 27/10/2014.
+>>>>>>> interfaceAdmin
  */
 public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     private static Logger log = LoggerFactory.getLogger(ApplicationInitializer.class);
 
+<<<<<<< HEAD
+=======
     private int maxUploadSizeInMb = 100 * 1024 * 1024; // 100 MB
 
+>>>>>>> interfaceAdmin
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{AppConfiguration.class};
@@ -33,6 +52,8 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
         return new String[]{"/"};
     }
 
+<<<<<<< HEAD
+=======
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 
@@ -43,5 +64,6 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
         registration.setMultipartConfig(multipartConfigElement);
 
     }
+>>>>>>> interfaceAdmin
 
 }

@@ -25,7 +25,11 @@ import java.util.TreeSet;
 /**
  * Created by jug on 20/10/2014.
  * <p/>
+<<<<<<< HEAD
+ * TODO Gérer l'ordre des PROFILES retournés, donner un poids au profile et non un tri alphabetique
+=======
  * TODO Gérer l'ordre des PROFILES retournés, donner un poids au profile pour ordonner selon le poids et non alphabetiquement
+>>>>>>> interfaceAdmin
  */
 @Component
 public class BundlesStoreConfigurationManager {
