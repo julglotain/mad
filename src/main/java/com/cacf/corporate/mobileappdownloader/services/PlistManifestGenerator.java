@@ -55,7 +55,7 @@ public class PlistManifestGenerator implements ManifestGenerator {
     public String generate(AppConfigurationTriplet appConfig) {
 
         ManifestContextConfigBuilder contextConfigBuilder = new ManifestContextConfigBuilder()
-                .withAppBundleIdentifier(appConfig.getFirst().getIdentifier() + "." + appConfig.getSecond().getIdentifierSuffix())
+                .withAppBundleIdentifier(appConfig.getFirst().getIdentifier() + resolveBundleSuffix(appConfig.getSecond().getIdentifierSuffix()))
                 .withAppTitle(appConfig.getThird().getTitle());
 
         ProtectedResourceURLBuilder resourceURLBuilder = buildBaseResourcesUrl();
@@ -63,7 +63,8 @@ public class PlistManifestGenerator implements ManifestGenerator {
         resourceURLBuilder.setPath(DownloadFileController.DOWNLOAD_APP_FILE_ROUTE_PATH);
 
         Map<String, String> builderPathValues = new HashMap<>();
-        builderPathValues.put("bundle", appConfig.getFirst().getIdentifier() + "." + appConfig.getSecond().getIdentifierSuffix());
+        builderPathValues.put("bundle", appConfig.getFirst().getIdentifier() + resolveBundleSuffix(appConfig.getSecond().getIdentifierSuffix()));
+
         try {
             builderPathValues.put("app", URLEncoder.encode(appConfig.getThird().getTitle(), "utf-8"));
         } catch (UnsupportedEncodingException e) {
@@ -97,6 +98,14 @@ public class PlistManifestGenerator implements ManifestGenerator {
         variables.put("context", manifestContextConfig);
 
         return createHtmlContentFromTemplate(Locale.ENGLISH, variables);
+    }
+
+    private String resolveBundleSuffix(String bundleIdentifierProfileSuffix) {
+        if (bundleIdentifierProfileSuffix != null) {
+            return "." + bundleIdentifierProfileSuffix;
+        } else {
+            return "";
+        }
     }
 
     private ProtectedResourceURLBuilder buildBaseResourcesUrl() {

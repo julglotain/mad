@@ -19,4 +19,25 @@ angular
             $window.location = ((isIOs) ? 'itms-services://?action=download-manifest&url=' : '') + manifestUrl;
         }
 
+    })
+    .directive('bundleIdentifierLabel',function(){
+        return {
+            restrict: 'E',
+            scope: {
+                bundle: '=bundle',
+                suffix: '=suffix'
+            },
+            template: function(){
+
+                return '<span class="label label-warning pull-right">{{ bundle }}{{ suffix | prependIfNotNull:"." }}</span>';
+
+            }
+        };
+    })
+    .filter('prependIfNotNull',function(){
+
+        return function(input, valueToPrepend){
+            return (input) ? valueToPrepend + input : '';
+        }
+
     });

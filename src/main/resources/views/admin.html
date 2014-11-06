@@ -40,7 +40,12 @@
         }
 
     </style>
-
+    <script type="text/ng-template" id="customTemplate.html">
+        <a>
+            <span bind-html-unsafe="match.model.bundle | typeaheadHighlight:query"></span>
+            <span ng-if="match.model.profile" style="font-weight: bold;">&nbsp;-&nbsp;{{match.model.profile}}</span>
+        </a>
+    </script>
 </head>
 <body>
 
@@ -61,45 +66,59 @@
                         <div class="form-group">
                             <label for="appTitle" class="col-sm-2 control-label">Titre</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="appTitle" name="title" ng-model="formData.title" placeholder="Titre"/>
+                                <input type="text" class="form-control" id="appTitle" name="title" required="" ng-model="formData.title" placeholder="Title ..."/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="version" class="col-sm-2 control-label">Version</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="version" name="version" ng-model="formData.version" placeholder="Version"/>
+                                <input type="text" class="form-control" id="version" name="version" required="" ng-model="formData.version" placeholder="Ex: 1.0, 2.3.5 ..."/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="description"  name="desc" ng-model="formData.desc" placeholder="Ex: Test App v1.2, fixed some bugs ..."/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="bundle" class="col-sm-2 control-label">Bundle</label>
-
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="bundle" name="bundle" ng-model="formData.bundle" placeholder="Bundle"/>
+                            <div class="col-sm-10" ng-controller="BundleListCompletionCtrl">
+                                <!--<input type="text" class="form-control" id="bundle" name="bundle" ng-model="formData.bundle" placeholder="Ex: com.xyz.app ..."/>-->
+                                <input type="text" id="bundle" name="bundle" ng-model="formData.bundle"
+                                       typeahead="bundle for bundle in getBundles($viewValue)"
+                                       typeahead-loading="loadingBundles"
+                                       typeahead-template-url="customTemplate.html"
+                                       typeahead-on-select="onSelect($item, $model, $label)"
+                                       typeahead-min-length="3"
+                                       typeahead-wait-ms="500"
+                                       class="form-control" placeholder="Ex: com.xyz.app ..." />
+                                <i ng-show="loadingBundles" class="glyphicon glyphicon-refresh"></i>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="version" class="col-sm-2 control-label">Profile</label>
+                            <label for="profile" class="col-sm-2 control-label">Profile</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="profile" name="profile" ng-model="formData.profileId" placeholder="Profile"/>
+                                <input type="text" class="form-control" id="profile" name="profile" ng-model="formData.profileId" placeholder="DEV,RCT,PROD ..."/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="app" class="col-sm-2 control-label">App</label>
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" id="app" name="app" ng-file-model="formData.app" placeholder="App"/>
+                                <input type="file" class="form-control" id="app" name="app" ng-file-model="formData.app"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="small_icon" class="col-sm-2 control-label">Small icon</label>
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" id="small_icon" name="small_icon" ng-file-model="formData.smallIcon" placeholder="Small icon"/>
+                                <input type="file" class="form-control" id="small_icon" name="small_icon" ng-file-model="formData.smallIcon"/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="large_icon" class="col-sm-2 control-label">Small icon</label>
+                            <label for="large_icon" class="col-sm-2 control-label">Large icon</label>
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" id="large_icon" name="large_icon" ng-file-model="formData.largeIcon" placeholder="Small icon"/>
+                                <input type="file" class="form-control" id="large_icon" name="large_icon" ng-file-model="formData.largeIcon"/>
                             </div>
                         </div>
 
@@ -109,6 +128,7 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -133,29 +153,12 @@
 
     </div>
 
-    <div class="row">
-
-        <!-- gestion des bundles -->
-        <div class="col-md-6">
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Gestion des bundles</h3>
-                </div>
-                <div class="panel-body">
-                    <ul></ul>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"
         th:src="@{/webjars/angularjs/1.3.0/angular.min.js}"></script>
+
+<script th:src="@{/webjars/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.js}"></script>
 
 <script th:src="@{/js/admin.js}"></script>
 

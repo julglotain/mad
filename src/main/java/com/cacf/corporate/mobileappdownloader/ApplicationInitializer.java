@@ -3,6 +3,7 @@ package com.cacf.corporate.mobileappdownloader;
 import com.cacf.corporate.mobileappdownloader.config.AppConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.MultipartConfigElement;
@@ -42,4 +43,5 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
         registration.setMultipartConfig(multipartConfigElement);
 
     }
+
 }

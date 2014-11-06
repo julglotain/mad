@@ -1,5 +1,7 @@
 package com.cacf.corporate.mobileappdownloader.bundles.domain;
 
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,6 +14,9 @@ public class BundlesStoreConfiguration {
     private String availableProfiles;
 
     public Set<BundleConfiguration> getBundlesList() {
+        if (bundlesList == null) {
+            bundlesList = new HashSet<>();
+        }
         return bundlesList;
     }
 
@@ -40,5 +45,16 @@ public class BundlesStoreConfiguration {
         return this.getAvailableProfiles().split(",");
     }
 
+    public BundleConfiguration findBundleByIdentifier(String identifier) {
+
+        for (BundleConfiguration bundle : getBundlesList()) {
+            if (bundle.getIdentifier().equals(identifier)) {
+                return bundle;
+            }
+        }
+
+        return null;
+
+    }
 
 }

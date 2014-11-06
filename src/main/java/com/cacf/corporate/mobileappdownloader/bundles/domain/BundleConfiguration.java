@@ -1,5 +1,6 @@
 package com.cacf.corporate.mobileappdownloader.bundles.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,10 +33,16 @@ public class BundleConfiguration {
     }
 
     public Set<ProfileConfiguration> getProfilesList() {
+        if(profilesList==null){
+            profilesList = new HashSet<>();
+        }
         return profilesList;
     }
 
     public void setProfilesList(Set<ProfileConfiguration> profilesList) {
+        if (profilesList == null) {
+            profilesList = new HashSet<>();
+        }
         this.profilesList = profilesList;
     }
 
@@ -45,5 +52,16 @@ public class BundleConfiguration {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ProfileConfiguration findProfileById(String id) {
+
+        for (ProfileConfiguration profConf : getProfilesList()) {
+            if (profConf.getId().equals(id)) {
+                return profConf;
+            }
+        }
+
+        return null;
     }
 }
