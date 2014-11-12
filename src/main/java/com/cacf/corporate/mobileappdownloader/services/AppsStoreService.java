@@ -1,0 +1,36 @@
+package com.cacf.corporate.mobileappdownloader.services;
+
+import com.cacf.corporate.mobileappdownloader.entities.store.AppVersion;
+import com.cacf.corporate.mobileappdownloader.entities.store.AppsStore;
+import com.cacf.corporate.mobileappdownloader.entities.store.Bundle;
+import com.cacf.corporate.mobileappdownloader.security.User;
+import com.cacf.corporate.mobileappdownloader.utils.Pair;
+
+import java.util.Set;
+
+/**
+ * Created by jug on 06/11/2014.
+ */
+public interface AppsStoreService {
+
+    /**
+     * Retourne l'ensemble de la configuration de l'apps store.
+     *
+     * @return
+     */
+    AppsStore load();
+
+    /**
+     * Retourne les différents bundles et apps accessibles pour un utilisateur donné.
+     * @param user le user en question
+     * @return un AppsStore filtré selon les droits de l'utilisateur
+     */
+    AppsStore getUserRightsFilteredAppsStore(User user);
+
+    AppVersion addAppVersion();
+
+    AppVersion findAppVersion(String bundle, String profile, String versionNumber) throws AppVersionNotFoundException;
+
+    Pair<AppVersion, Bundle> findAppVersionWithBundle(String bundle, String profile, String versionNumber) throws AppVersionNotFoundException;
+
+}

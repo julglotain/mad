@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="downloadableAppsListApp">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Choose an app to install</title>
+
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.2.0/css/bootstrap.min.css"
+              th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.2.0/css/bootstrap-theme.min.css"
+              th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+
+        <style>
+            body {
+                padding-top: 40px;
+                padding-bottom: 40px;
+                background-color: #eee;
+            }
+            .apps-list {
+                max-width: 70%;
+            }
+            .apps-list .row:not(list-child) {
+                margin-bottom: 20px;
+            }
+            .panel-heading {
+                min-height: 40px;
+            }
+            .preview-icon {
+                max-width: 50px;
+            }
+            .default-preview-icon {
+                color: rgba(0,0,0,.3);
+                font-size: 2.6em;
+                margin-top: 5px;
+                width: 50px;
+                text-align: center;
+            }
+            .app-desc {
+                margin-left: 20px;
+                font-size: 1.2em;
+            }
+
+        </style>
+
+    </head>
+    <body>
+
+        <div class="container" ng-controller="AppsListCtrl">
+
+            <div ng-repeat='bundle in bundles'>
+
+                <h2>{{bundle.name}}</h2>
+
+                <div ng-repeat='profile in bundle.profiles'>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="pull-left">Profile: {{profile.id}}</span>
+                                <bundle-identifier-label bundle="bundle.identifier" suffix="profile.identifierSuffix" />
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="apps-list" ng-repeat='app in profile.applications'>
+                                <div class="row">
+                                    <div class="col-xs-10 col-sm-10 col-md-10">
+                                        <div class="pull-left" ng-switch="" on="app.dlPreviewIconUrl || 'null'">
+                                            <div ng-switch-when="null">
+                                                <span class="default-preview-icon glyphicon glyphicon-question-sign"></span>
+                                            </div>
+                                            <div ng-switch-default="">
+                                                <img class="preview-icon" ng-src="{{app.dlPreviewIconUrl}}" />
+                                            </div>
+                                        </div>
+                                        <div class="pull-left app-desc">
+                                            <strong>{{app.title}} - {{app.version}}</strong><br/>{{app.desc}}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2">
+                                        <a type="button" ng-click="downloadManifest(app.dlManifestUrl)"
+                                            class="pull-right dl_manifest_btn btn btn-success glyphicon glyphicon-cloud-download"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"
+                th:src="@{/webjars/angularjs/1.3.0/angular.min.js}"></script>
+
+        <script th:src="@{/js/store.js}"></script>
+
+    </body>
+</html>

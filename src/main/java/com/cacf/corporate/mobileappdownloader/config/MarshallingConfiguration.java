@@ -1,13 +1,12 @@
 package com.cacf.corporate.mobileappdownloader.config;
 
-import com.cacf.corporate.mobileappdownloader.bundles.BundlesStoreConfigurationXmlMarshallerConfigurer;
-import com.cacf.corporate.mobileappdownloader.marshalling.XStreamXmlMarshaller;
-import com.cacf.corporate.mobileappdownloader.marshalling.XmlMarshallerConfigurer;
+import com.cacf.corporate.mobileappdownloader.entities.store.AppVersion;
+import com.cacf.corporate.mobileappdownloader.entities.store.AppsStore;
+import com.cacf.corporate.mobileappdownloader.entities.store.Bundle;
+import com.thoughtworks.xstream.XStream;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.oxm.xstream.XStreamMarshaller;
 
 /**
  * Created by jug on 20/10/2014.
@@ -16,17 +15,14 @@ import java.util.Set;
 public class MarshallingConfiguration {
 
     @Bean
-    public XStreamXmlMarshaller xmlMarshaller() {
+    public XStreamMarshaller marshaller() {
 
-        XStreamXmlMarshaller xmlMarshaller = new XStreamXmlMarshaller();
+        XStreamMarshaller marshaller = new XStreamMarshaller();
 
-        Set<XmlMarshallerConfigurer> xmlMarshallerConfigurers = new HashSet<>();
-        xmlMarshallerConfigurers.add(new BundlesStoreConfigurationXmlMarshallerConfigurer());
+        marshaller.setAnnotatedClasses(AppsStore.class, Bundle.class, AppVersion.class);
 
-        for (XmlMarshallerConfigurer configurer : xmlMarshallerConfigurers) {
-            configurer.configure(xmlMarshaller);
-        }
-
-        return xmlMarshaller;
+        return marshaller;
     }
+
+
 }

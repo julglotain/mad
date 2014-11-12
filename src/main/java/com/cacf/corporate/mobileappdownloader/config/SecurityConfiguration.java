@@ -1,8 +1,9 @@
 package com.cacf.corporate.mobileappdownloader.config;
 
 import com.cacf.corporate.mobileappdownloader.security.AuthorityBasedRedirectionSuccessHandler;
-import com.cacf.corporate.mobileappdownloader.usermanagement.GrantedAuthorityImpl;
-import com.cacf.corporate.mobileappdownloader.usermanagement.UserManager;
+import com.cacf.corporate.mobileappdownloader.security.GrantedAuthorityImpl;
+import com.cacf.corporate.mobileappdownloader.security.UserManager;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
  */
 @Configuration
 @EnableWebSecurity
+@ComponentScan("com.cacf.corporate.mobileappdownloader.security")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
@@ -45,9 +47,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/download").authenticated()
-                .antMatchers("/download/").authenticated()
-                .antMatchers("/download.json").authenticated()
+                .antMatchers("/store").authenticated()
+                .antMatchers("/store/").authenticated()
+                .antMatchers("/store/data").authenticated()
+                .antMatchers("/store/data/").authenticated()
+                .antMatchers("/store/dl/**").authenticated()
                 .antMatchers("/admin").hasAuthority(GrantedAuthorityImpl.ADMIN.getAuthority())
                 .antMatchers("/admin/**").hasAuthority(GrantedAuthorityImpl.ADMIN.getAuthority())
                 .and()

@@ -1,34 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
+<appsStore availableProfiles="DEV,RCT,UAT,PROD">
 
-    Constitue et référence le store des applications disponibles au téléchargement.
+    <bundle identifier="com.cacf.agos.dev" profile="DEV">
 
-    L'attribut @availablesProfiles précise la liste des profiles disponibles et restreint l'ajout d'une app dans un profile non disponible.
+        <version number="1.0">
 
--->
-<bundles availableProfiles="DEV,TEST,RCT,PROD">
-    <!--
-
-        Chaque bundle possède un identifier unique, il s'agit en realité d'un prefix et ne constitue pas
-        un nom de bundle complet, celui-ci est complété par la valeur de l'attribut d'un de ses profiles
-        enfants :
-
-        Par exemple ci dessous l'application MobSubDev en version 1.0 sera identifiée par un de bundle égale à com.agos.credit.app.dev
-
-        Attributs:
-
-            @identifier = base de nom d'un bundle, obligatoire
-            @name = Pour affichage et référencage User friendly d'un bundle, pas obligatoire mais conseillé
+            <name>MobSubDev</name>
 
 
-    -->
+            <desc>MobSub v1.0, for tests purpose.</desc>
 
+            <filesURILocations>
 
-    <!--
-    <bundle identifier="com.creditplus.credit.app" name="CREDITPLUS MobSub app">
+                <app>file:/Users/jug/Development/Pro/tmp/mad/sample/MobSubTest-1.0.ipa</app>
+                <icons>
+                    <small>file:/Users/jug/Development/Pro/tmp/mad/sample/mobsub-small-icon.png</small>
+                    <large>file:/Users/jug/Development/Pro/tmp/mad/sample/mobsub-large-icon.png</large>
+                </icons>
 
-         ....
+            </filesURILocations>
+
+        </version>
 
     </bundle>
-    -->
-</bundles>
+
+    <bundle identifier="com.cacf.agos.rct" profile="RCT">
+
+        <version number="1.0">
+            <name>MobSubDev</name>
+            <desc>MobSub v1.0, for tests purpose.</desc>
+            <filesURILocations>
+
+                <app>file:/Users/jug/Development/Pro/tmp/mad/sample/MobSubTest-1.0.ipa</app>
+                <icons>
+                    <small>file:/Users/jug/Development/Pro/tmp/mad/sample/mobsub-small-icon.png</small>
+                    <large>file:/Users/jug/Development/Pro/tmp/mad/sample/mobsub-large-icon.png</large>
+                </icons>
+
+            </filesURILocations>
+        </version>
+
+    </bundle>
+
+</appsStore>

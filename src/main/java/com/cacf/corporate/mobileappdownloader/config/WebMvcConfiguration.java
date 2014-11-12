@@ -1,6 +1,7 @@
 package com.cacf.corporate.mobileappdownloader.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.MultipartResolver;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 @EnableWebMvc
+@ComponentScan(basePackages = "com.cacf.corporate.mobileappdownloader.controllers")
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     private static final int CACHE_PERIOD = 3600;
@@ -27,7 +29,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
                 .setCachePeriod(CACHE_PERIOD);
 
         registry.addResourceHandler("/js/**")
-                .addResourceLocations("classpath:/js/")
+                .addResourceLocations("classpath:/frontend/js/")
                 .setCachePeriod(CACHE_PERIOD);
 
 

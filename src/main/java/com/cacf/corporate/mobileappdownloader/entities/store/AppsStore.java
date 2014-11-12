@@ -1,0 +1,29 @@
+package com.cacf.corporate.mobileappdownloader.entities.store;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.Set;
+import java.util.TreeSet;
+
+/**
+ * Created by jug on 06/11/2014.
+ */
+@XStreamAlias("appsStore")
+public class AppsStore {
+
+    @XStreamImplicit(itemFieldName = "bundle")
+    private Set<Bundle> bundles;
+
+    public Set<Bundle> getBundles() {
+        if (bundles == null) {
+            bundles = new TreeSet<>();
+        }
+        return bundles;
+    }
+
+    public void setBundles(Set<Bundle> bundles) {
+        this.bundles = bundles;
+    }
+
+}

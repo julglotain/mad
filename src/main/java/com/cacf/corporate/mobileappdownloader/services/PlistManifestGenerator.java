@@ -1,11 +1,12 @@
 package com.cacf.corporate.mobileappdownloader.services;
 
-import com.cacf.corporate.mobileappdownloader.bundles.AppConfigurationTriplet;
-import com.cacf.corporate.mobileappdownloader.bundles.domain.ApplicationConfiguration;
-import com.cacf.corporate.mobileappdownloader.download.DownloadFileController;
+import com.cacf.corporate.mobileappdownloader.controllers.DownloadFileController;
 import com.cacf.corporate.mobileappdownloader.download.DownloadFileType;
 import com.cacf.corporate.mobileappdownloader.dto.ManifestContextConfig;
 import com.cacf.corporate.mobileappdownloader.dto.ManifestContextConfigBuilder;
+import com.cacf.corporate.mobileappdownloader.entities.store.AppVersion;
+import com.cacf.corporate.mobileappdownloader.entities.store.Bundle;
+import com.cacf.corporate.mobileappdownloader.utils.Pair;
 import com.cacf.corporate.mobileappdownloader.utils.ProtectedResourceURLBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,6 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -51,35 +50,40 @@ public class PlistManifestGenerator implements ManifestGenerator {
         return null;
     }
 
+
     @Override
-    public String generate(AppConfigurationTriplet appConfig) {
+    public String generate(Pair<AppVersion, Bundle> appConfig) {
 
         ManifestContextConfigBuilder contextConfigBuilder = new ManifestContextConfigBuilder()
-                .withAppBundleIdentifier(appConfig.getFirst().getIdentifier() + resolveBundleSuffix(appConfig.getSecond().getIdentifierSuffix()))
-                .withAppTitle(appConfig.getThird().getTitle());
+                .withAppBundleIdentifier(appConfig.getSecond().getIdentifier())
+                .withAppTitle(appConfig.getFirst().getName());
 
         ProtectedResourceURLBuilder resourceURLBuilder = buildBaseResourcesUrl();
         // common path to download any file
         resourceURLBuilder.setPath(DownloadFileController.DOWNLOAD_APP_FILE_ROUTE_PATH);
 
         Map<String, String> builderPathValues = new HashMap<>();
-        builderPathValues.put("bundle", appConfig.getFirst().getIdentifier() + resolveBundleSuffix(appConfig.getSecond().getIdentifierSuffix()));
+        builderPathValues.put("bundle", appConfig.getSecond().getIdentifier());
+        builderPathValues.put("profile", appConfig.getSecond().getProfile());
 
-        try {
-            builderPathValues.put("app", URLEncoder.encode(appConfig.getThird().getTitle(), "utf-8"));
-        } catch (UnsupportedEncodingException e) {
+        // try {
+        // builderPathValues.put("app", URLEncoder.encode(appConfig.getFirst().getName(), "utf-8"));
+        builderPathValues.put("app", appConfig.getFirst().getName());
+
+        /*} catch (UnsupportedEncodingException e) {
             log.error("Error when trying to encode app title with value '{}'.", appConfig.getThird().getTitle());
-        }
-        builderPathValues.put("version", appConfig.getThird().getVersion());
+        }*/
+
+        builderPathValues.put("version", appConfig.getFirst().getNumber());
 
         // build manifest dl url
         builderPathValues.put("type", "APP");
         contextConfigBuilder.withProxyDlAppUrl(resourceURLBuilder.build(builderPathValues));
 
         // build icons dl url if exist
-        if (appConfig.getThird().getFilesURILocations().getIcons() != null) {
+        if (appConfig.getFirst().getFilesURILocations().getIcons() != null) {
 
-            ApplicationConfiguration.FilesURILocations.Icons icons = appConfig.getThird().getFilesURILocations().getIcons();
+            AppVersion.FilesURILocations.Icons icons = appConfig.getFirst().getFilesURILocations().getIcons();
 
             if (!StringUtils.isEmpty(icons.getSmall())) {
                 builderPathValues.put("type", DownloadFileType.SMALL_ICON.getValue());
@@ -100,13 +104,6 @@ public class PlistManifestGenerator implements ManifestGenerator {
         return createHtmlContentFromTemplate(Locale.ENGLISH, variables);
     }
 
-    private String resolveBundleSuffix(String bundleIdentifierProfileSuffix) {
-        if (bundleIdentifierProfileSuffix != null) {
-            return "." + bundleIdentifierProfileSuffix;
-        } else {
-            return "";
-        }
-    }
 
     private ProtectedResourceURLBuilder buildBaseResourcesUrl() {
 

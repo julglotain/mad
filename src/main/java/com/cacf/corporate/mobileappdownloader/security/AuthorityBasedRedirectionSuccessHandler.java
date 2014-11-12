@@ -1,6 +1,5 @@
 package com.cacf.corporate.mobileappdownloader.security;
 
-import com.cacf.corporate.mobileappdownloader.usermanagement.GrantedAuthorityImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -22,7 +21,7 @@ public class AuthorityBasedRedirectionSuccessHandler implements AuthenticationSu
         if (containsAuthority(authentication.getAuthorities(), GrantedAuthorityImpl.ADMIN)) {
             response.sendRedirect(request.getContextPath() + "/admin");
         } else {
-            response.sendRedirect(request.getContextPath() +"/download");
+            response.sendRedirect(request.getContextPath() +"/store");
         }
 
     }

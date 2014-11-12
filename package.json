@@ -1,0 +1,19 @@
+{
+  "name": "MobileAppDownloader",
+  "version": "0.0.0",
+  "description": "- Copier les différents fichiers de /conf-sample et les placer dans un répertoire",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://10.105.55.152/cacf/tools/mobile-application-downloader"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "gulp": "~3.8.10",
+    "del": "~0.1.3"
+  }
+}

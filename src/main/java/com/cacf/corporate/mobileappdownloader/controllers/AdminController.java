@@ -1,6 +1,5 @@
 package com.cacf.corporate.mobileappdownloader.controllers;
 
-import com.cacf.corporate.mobileappdownloader.bundles.BundlesStoreConfigurationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.inject.Inject;
 import javax.servlet.http.Part;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -25,8 +24,8 @@ public class AdminController {
 
     private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 
-    @Inject
-    private BundlesStoreConfigurationManager bundlesStoreConfigurationManager;
+    // @Inject
+    // private BundlesStoreConfigurationManager bundlesStoreConfigurationManager;
 
     @Value("${mad.apps-bundle-store.uploaded.dir.path}")
     private String uploadAppsStoreBaseDir;
@@ -46,7 +45,7 @@ public class AdminController {
             @RequestParam(value = "largeIcon", required = false) Part largeIcon) {
 
 
-        bundlesStoreConfigurationManager.addApplication(title, version, desc, bundle, profileId, app, smallIcon, largeIcon);
+        // bundlesStoreConfigurationManager.addApplication(title, version, desc, bundle, profileId, app, smallIcon, largeIcon);
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("result", "OK");
@@ -61,7 +60,7 @@ public class AdminController {
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("result", "OK");
-        responseBody.put("items", bundlesStoreConfigurationManager.findBundlesByName(idenfifier));
+        responseBody.put("items", new HashSet<>());//bundlesStoreConfigurationManager.findBundlesByName(idenfifier));
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
     }
