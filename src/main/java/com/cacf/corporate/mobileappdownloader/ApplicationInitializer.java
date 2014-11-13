@@ -29,8 +29,9 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/"};
+        return new String[]{"/*"};
     }
+
 
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
@@ -42,5 +43,6 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
         registration.setMultipartConfig(multipartConfigElement);
 
     }
+
 
 }

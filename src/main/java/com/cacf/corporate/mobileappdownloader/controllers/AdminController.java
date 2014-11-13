@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +49,7 @@ public class AdminController {
 
     }
 
+    /*
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>> upload(
             @RequestParam("name") String name, @RequestParam("version") String version,
@@ -66,6 +68,28 @@ public class AdminController {
         responseBody.put("message", "App has been sucessfully added to the store.");
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
+
+    }*/
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public void upload(
+            @RequestParam("name") String name, @RequestParam("version") String version,
+            @RequestParam(value = "desc", required = false) String desc,
+            @RequestParam(value = "bundle") String bundle, @RequestParam(value = "profile") String profile,
+            @RequestParam("app") Part app,
+            @RequestParam(value = "smallIcon", required = false) Part smallIcon,
+            @RequestParam(value = "largeIcon", required = false) Part largeIcon, HttpServletResponse response) throws AppVersionAlreadyExistsException, FileWritingFailureException {
+
+        Pair<com.cacf.corporate.mobileappdownloader.entities.store.Bundle, AppVersion> newConf = new BindParametersToAppConf(name, version, desc, bundle, profile).invoke();
+
+        appsStoreService.addAppVersion(newConf, app, smallIcon, largeIcon);
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("result", "OK");
+        responseBody.put("message", "App has been sucessfully added to the store.");
+        // return new ResponseEntity<>(responseBody, HttpStatus.OK);
+
+        response.setStatus(200);
 
     }
 

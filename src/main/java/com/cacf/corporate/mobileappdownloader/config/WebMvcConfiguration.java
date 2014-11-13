@@ -36,10 +36,13 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         return new MappingJackson2HttpMessageConverter();
     }
 
+    /**
     @Bean
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
     }
+
+    */
 
 
 }
