@@ -47,7 +47,7 @@ public class ThymeleafConfiguration {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("frontend/views/");
         templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML5");
+        templateResolver.setTemplateMode("LEGACYHTML5");
         return templateResolver;
     }
 

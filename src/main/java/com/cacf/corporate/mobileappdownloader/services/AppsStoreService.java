@@ -6,6 +6,7 @@ import com.cacf.corporate.mobileappdownloader.entities.store.Bundle;
 import com.cacf.corporate.mobileappdownloader.security.User;
 import com.cacf.corporate.mobileappdownloader.utils.Pair;
 
+import javax.servlet.http.Part;
 import java.util.Set;
 
 /**
@@ -22,15 +23,20 @@ public interface AppsStoreService {
 
     /**
      * Retourne les différents bundles et apps accessibles pour un utilisateur donné.
+     *
      * @param user le user en question
      * @return un AppsStore filtré selon les droits de l'utilisateur
      */
     AppsStore getUserRightsFilteredAppsStore(User user);
 
-    AppVersion addAppVersion();
+    AppVersion addAppVersion(Pair<Bundle, AppVersion> appConf, Part app, Part smallIcon, Part largeIcon) throws AppVersionAlreadyExistsException, FileWritingFailureException;
 
     AppVersion findAppVersion(String bundle, String profile, String versionNumber) throws AppVersionNotFoundException;
 
     Pair<AppVersion, Bundle> findAppVersionWithBundle(String bundle, String profile, String versionNumber) throws AppVersionNotFoundException;
+
+    Set<String> getAvailableProfiles();
+
+    Set<Bundle> findBundlesByIdentifierPrefix(String idPrefix);
 
 }

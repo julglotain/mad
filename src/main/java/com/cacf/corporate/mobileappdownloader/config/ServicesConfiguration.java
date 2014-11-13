@@ -9,4 +9,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("com.cacf.corporate.mobileappdownloader.services")
 public class ServicesConfiguration {
+
 }

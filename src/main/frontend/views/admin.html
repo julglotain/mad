@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="mad.administration">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="Cache-control" content="public">
+
+        <title>Administration</title>
+
+        <link rel="stylesheet" th:href="@{/resources/styles/vendors.css}" />
+        <link rel="stylesheet" th:href="@{/resources/styles/app.css}" />
+
+        <script type="text/ng-template" id="customTemplate.html">
+            <a>
+                <span bind-html-unsafe="match.model.identifier | typeaheadHighlight:query"></span>
+                <span ng-if="match.model.profile" style="font-weight: bold;">&nbsp;-&nbsp;{{match.model.profile}}</span>
+            </a>
+        </script>
+
+    </head>
+    <body>
+
+        <div class="container">
+
+            <h1>Admin view</h1>
+
+            <!-- first row  -->
+            <tabset justified="true">
+
+                <tab heading="Upload an app">
+
+                    <div class="inner-tab-content-wrapper">
+
+                        <form class="form-horizontal container-fluid upload-form" role="form" ng-controller="AddNewAppFormCtrl" ng-submit="submit()">
+                            <div class="row">
+                                <div class="col-md-5">
+
+                                    <div class="form-group" ng-controller="BundleListCompletionCtrl">
+                                        <label for="bundle" class="control-label">Bundle</label>
+                                        <input type="text" id="bundle" name="bundle" ng-model="formData.bundle"
+                                               typeahead="bundle for bundle in getBundles($viewValue)"
+                                               typeahead-loading="loadingBundles"
+                                               typeahead-template-url="customTemplate.html"
+                                               typeahead-on-select="onSelect($item, $model, $label)"
+                                               typeahead-min-length="3"
+                                               typeahead-wait-ms="500"
+                                               class="form-control" placeholder="Ex: com.xyz.app ..." required>
+                                        <i ng-show="loadingBundles" class="glyphicon glyphicon-refresh"></i>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="profile" class="control-label">Profile</label>
+                                        <select id="profile" name="profile" ng-model="formData.profile">
+                                            <option value="">Select one ..</option>
+                                            <option th:each="profile : ${availableProfiles}" th:value="${profile}" th:text="${profile}">profile</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="name" class="control-label">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" required ng-model="formData.name" placeholder="Name of the app ..."/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="version" class="control-label">Version</label>
+                                        <input type="text" class="form-control" id="version" name="version" required ng-model="formData.version" placeholder="Ex: 1.0, 2.3.5 ..."/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Description</label>
+                                        <input type="text" class="form-control" id="description"  name="desc" ng-model="formData.desc" placeholder="Ex: Test App v1.2, fixed some bugs ..."/>
+                                    </div>
+
+
+                                    <!--
+                                    <div class="form-group">
+                                        <label for="profile" class="control-label">Profile</label>
+                                        <input type="text" class="form-control" id="profile" name="profile" ng-model="formData.profile" placeholder="DEV,RCT,PROD ..."/>
+                                    </div>
+                                    -->
+                                </div>
+                                <div class="col-md-6 col-md-offset-1">
+                                    <!--
+                                    <div class="form-group">
+                                        <label for="app" class="control-label">App</label>
+                                        <bs-input-file name="app" ng-file-model="formData.app"></bs-input-file>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="small_icon" class="control-label">Small icon</label>
+                                        <bs-input-file name="small_icon" ng-file-model="formData.smallIcon"></bs-input-file>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="large_icon" class="control-label">Large icon</label>
+                                        <bs-input-file id="large_icon" name="large_icon" ng-file-model="formData.largeIcon"></bs-input-file>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                    </div>
+                                    -->
+                                    <div class="form-group">
+                                        <label for="app" class="control-label">App</label>
+                                        <input type="file" class="form-control" id="app" name="app" ng-file-model="formData.app"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="small_icon" class="control-label">Small icon</label>
+                                        <input type="file" class="form-control" id="small_icon" name="small_icon" ng-file-model="formData.smallIcon"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="large_icon" class="control-label">Large icon</label>
+                                        <input type="file" class="form-control" id="large_icon" name="large_icon" ng-file-model="formData.largeIcon"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </tab>
+
+                <tab heading="Manage bundles">
+
+                    <div class="inner-tab-content-wrapper" ng-controller="ManageBundlesListCtrl">
+
+                        <accordion close-others="true">
+                            <accordion-group ng-repeat="bundle in bundles">
+                                <accordion-heading>
+                                    {{bundle.identifier}} - {{bundle.profile}}
+                                </accordion-heading>
+                                <ul ng-repeat="version in bundle.versions | orderBy:'number':true">
+                                    <li>{{version.name}} - {{version.number}} <a ng-href="#" ng-click="removeAppVersion(bundle,version)" class="pull-right glyphicon glyphicon-trash"></a></li>
+                                </ul>
+                                <div ng-show="!bundle.versions.length">
+                                    <span>No app,</span>&nbsp;<a ng-click="removeBundle(bundle)" title="Delete this bundle and all its apps" class="" ng-href="#">remove</a>&nbsp;<span>this bundle ?</span>
+                                </div>
+                            </accordion-group>
+                        </accordion>
+
+                    </div>
+
+                </tab>
+
+            </tabset>
+
+        </div>
+
+        <script th:src="@{/resources/scripts/vendors.js}"></script>
+
+        <script th:src="@{/resources/scripts/app.js}"></script>
+
+    </body>
+</html>

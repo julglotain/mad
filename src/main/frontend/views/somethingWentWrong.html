@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Something went wrong...</title>
+    <link rel="stylesheet" th:href="@{/resources/styles/vendors.css}" />
+    <link rel="stylesheet" th:href="@{/resources/styles/app.css}" />
+</head>
+<body>
+
+<div class="container">
+    <p class="alert alert-danger">Something went wrong, please <a th:href="@{/store}">retry</a>.</p>
+</div>
+
+</body>
+</html>

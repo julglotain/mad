@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Please sign in to download an app</title>
+
+    <link rel="stylesheet" th:href="@{/resources/styles/vendors.css}" />
+    <link rel="stylesheet" th:href="@{/resources/styles/app.css}" />
+
+</head>
+<body>
+
+    <div class="container">
+
+        <form class="form-signin" th:action="@{/login/auth}" method="post" role="form">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <input type="text" class="form-control" placeholder="Username" name="username" required="" autofocus="" />
+            <input type="password" class="form-control" placeholder="Password" name="password" required="" />
+            <p th:if="${invalidCredentials}" style="color: red;">Invalid credentials</p>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+
+    </div>
+</body>
+</html>

@@ -1,6 +1,9 @@
 package com.cacf.corporate.mobileappdownloader.repositories;
 
+import com.cacf.corporate.mobileappdownloader.entities.store.AppVersion;
 import com.cacf.corporate.mobileappdownloader.entities.store.AppsStore;
+import com.cacf.corporate.mobileappdownloader.entities.store.Bundle;
+import com.cacf.corporate.mobileappdownloader.utils.Pair;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +88,28 @@ public class XmlFileAppsStoreRepository implements AppsStoreRepository {
             }
 
         }
+
+    }
+
+    @Override
+    public boolean checkIfVersionAlreadyExists(Pair<Bundle, AppVersion> appConf) {
+
+        for (Bundle bundle : getConfig().getBundles()) {
+
+            if (bundle.getIdentifier().equals(appConf.getFirst().getIdentifier())
+                    && bundle.getProfile().equals(appConf.getFirst().getProfile())) {
+
+                for (AppVersion version : bundle.getVersions()) {
+                    if (version.getNumber().equals(appConf.getSecond().getNumber())) {
+                        return true;
+                    }
+                }
+
+            }
+
+        }
+
+        return false;
 
     }
 

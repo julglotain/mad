@@ -54,6 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/store/dl/**").authenticated()
                 .antMatchers("/admin").hasAuthority(GrantedAuthorityImpl.ADMIN.getAuthority())
                 .antMatchers("/admin/**").hasAuthority(GrantedAuthorityImpl.ADMIN.getAuthority())
+                .antMatchers("/resources/**").permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/accessDenied")
                 .and()

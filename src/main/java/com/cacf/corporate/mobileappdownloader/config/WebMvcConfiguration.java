@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -19,17 +18,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan(basePackages = "com.cacf.corporate.mobileappdownloader.controllers")
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
-    private static final int CACHE_PERIOD = 3600;
+    private static final int CACHE_PERIOD = 3600 * 24 * 30;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/")
-                .setCachePeriod(CACHE_PERIOD);
 
-        registry.addResourceHandler("/js/**")
-                .addResourceLocations("classpath:/frontend/js/")
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("classpath:/frontend/")
                 .setCachePeriod(CACHE_PERIOD);
 
 

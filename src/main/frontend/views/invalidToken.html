@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Invalid token</title>
+    <link rel="stylesheet" th:href="@{/resources/styles/vendors.css}" />
+    <link rel="stylesheet" th:href="@{/resources/styles/app.css}" />
+</head>
+<body>
+
+<div class="container">
+    <p class="alert alert-danger">Your download token has expired or is invalid, please <a th:href="@{/store}">reload the page</a>.</p>
+</div>
+
+</body>
+</html>
