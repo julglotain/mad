@@ -33,6 +33,7 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
     }
 
 
+    /*
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 
@@ -42,7 +43,7 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 
         registration.setMultipartConfig(multipartConfigElement);
 
-    }
+    }*/
 
 
 }

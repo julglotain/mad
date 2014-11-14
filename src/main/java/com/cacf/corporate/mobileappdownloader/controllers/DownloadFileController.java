@@ -65,9 +65,6 @@ public class DownloadFileController {
         // recherche de la configuration de l'app pour laquelle on souhaite produire un manifest
         Pair<AppVersion, Bundle> appVersionConfig = appsStoreService.findAppVersionWithBundle(bundle, profile, version);
 
-
-        log.debug("About to download file: {}", type);
-
         String filePath = resolveFileURI(type, appVersionConfig.getFirst());
 
         Resource resource = new PathMatchingResourcePatternResolver().getResource(filePath);

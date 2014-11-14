@@ -16,15 +16,29 @@
             </a>
         </script>
 
+        <script type="text/ng-template" id="confirmModal.html">
+            <div class="modal-header">
+                <h3 class="modal-title">Please confirm</h3>
+            </div>
+            <div class="modal-body">
+                {{confirmationMessage}}
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="ok()">OK</button>
+                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+        </script>
+
+
     </head>
-    <body>
+    <body id="admin-page">
 
         <div class="container">
 
-            <h1>Admin view</h1>
+            <h3>Admin</h3>
 
             <!-- first row  -->
-            <tabset justified="true">
+            <tabset justified="false">
 
                 <tab heading="Upload an app">
 
@@ -68,13 +82,6 @@
                                         <input type="text" class="form-control" id="description"  name="desc" ng-model="formData.desc" placeholder="Ex: Test App v1.2, fixed some bugs ..."/>
                                     </div>
 
-
-                                    <!--
-                                    <div class="form-group">
-                                        <label for="profile" class="control-label">Profile</label>
-                                        <input type="text" class="form-control" id="profile" name="profile" ng-model="formData.profile" placeholder="DEV,RCT,PROD ..."/>
-                                    </div>
-                                    -->
                                 </div>
                                 <div class="col-md-6 col-md-offset-1">
                                     <!--
@@ -109,6 +116,7 @@
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Upload</button>
+                                        <span ng-show="showUploadLabelMessage" class="label {{uploadLabelMessageType}}">{{uploadLabelMessage}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -118,23 +126,35 @@
 
                 </tab>
 
-                <tab heading="Manage bundles">
+                <tab heading="Manage apps">
 
-                    <div class="inner-tab-content-wrapper" ng-controller="ManageBundlesListCtrl">
+                    <div class="inner-tab-content-wrapper" ng-controller="ManageAppsCtrl">
 
                         <accordion close-others="true">
-                            <accordion-group ng-repeat="bundle in bundles">
+                            <accordion-group ng-repeat="bundle in bundles | orderBy:'identifier':true">
                                 <accordion-heading>
                                     {{bundle.identifier}} - {{bundle.profile}}
                                 </accordion-heading>
                                 <ul ng-repeat="version in bundle.versions | orderBy:'number':true">
-                                    <li>{{version.name}} - {{version.number}} <a ng-href="#" ng-click="removeAppVersion(bundle,version)" class="pull-right glyphicon glyphicon-trash"></a></li>
+                                    <li>{{version.name}} - {{version.number}} <a ng-href="#" ng-click="removeAppVersion(bundle,version)" class="remove-app-icon glyphicon glyphicon-trash"></a></li>
                                 </ul>
                                 <div ng-show="!bundle.versions.length">
                                     <span>No app,</span>&nbsp;<a ng-click="removeBundle(bundle)" title="Delete this bundle and all its apps" class="" ng-href="#">remove</a>&nbsp;<span>this bundle ?</span>
                                 </div>
                             </accordion-group>
                         </accordion>
+
+                        <div ng-show="!bundles.length" class="alert alert-info" role="alert">No apps in this store yet.</div>
+
+                    </div>
+
+                </tab>
+
+                <tab heading="Manage bundles">
+
+                    <div class="inner-tab-content-wrapper" ng-controller="ManageBundlesCtrl">
+
+                        <div class="alert alert-warning" role="alert">Soon ..</div>
 
                     </div>
 

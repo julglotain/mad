@@ -83,12 +83,18 @@ body {
 
 .inner-tab-content-wrapper {
   padding: 3% 5%;
-  background-color: #fff;
+  /*
+  background-color: #f8f8f8;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   border-left: 1px solid #ddd;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
+  */
+}
+
+#admin-page {
+  background-color: white;
 }
 
 .btn-file {
@@ -112,4 +118,8 @@ body {
 input[readonly] {
   background-color: white !important;
   cursor: text !important;
+}
+
+.remove-app-icon {
+  margin-left: 5px;
 }
