@@ -5,8 +5,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import org.springframework.util.StringUtils;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by jug on 06/11/2014.
@@ -55,7 +55,7 @@ public class Bundle {
 
     public Set<AppVersion> getVersions() {
         if (versions == null) {
-            versions = new TreeSet<>();
+            versions = new HashSet<>();
         }
         return versions;
     }

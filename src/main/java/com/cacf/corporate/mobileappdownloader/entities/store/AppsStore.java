@@ -6,7 +6,6 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by jug on 06/11/2014.
@@ -22,7 +21,7 @@ public class AppsStore {
 
     public Set<Bundle> getBundles() {
         if (bundles == null) {
-            bundles = new TreeSet<>();
+            bundles = new HashSet<>();
         }
         return bundles;
     }
