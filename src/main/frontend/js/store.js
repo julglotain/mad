@@ -1,5 +1,5 @@
 angular
-    .module('mad.store', ['mad.services'])
+    .module('mad.store', ['mad.services','mad.filters'])
     .controller('AppsListCtrl', ['$scope', '$window', 'BundlesListService', function ($scope, $window, BundlesListService) {
 
         BundlesListService

@@ -12,15 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -49,15 +46,14 @@ public class AdminController {
 
     }
 
-    /*
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>> upload(
             @RequestParam("name") String name, @RequestParam("version") String version,
             @RequestParam(value = "desc", required = false) String desc,
             @RequestParam(value = "bundle") String bundle, @RequestParam(value = "profile") String profile,
-            @RequestParam("app") Part app,
-            @RequestParam(value = "smallIcon", required = false) Part smallIcon,
-            @RequestParam(value = "largeIcon", required = false) Part largeIcon) throws AppVersionAlreadyExistsException, FileWritingFailureException {
+            @RequestParam("app") MultipartFile app,
+            @RequestParam(value = "smallIcon", required = false) MultipartFile smallIcon,
+            @RequestParam(value = "largeIcon", required = false) MultipartFile largeIcon, HttpServletResponse response) throws AppVersionAlreadyExistsException, FileWritingFailureException {
 
         Pair<com.cacf.corporate.mobileappdownloader.entities.store.Bundle, AppVersion> newConf = new BindParametersToAppConf(name, version, desc, bundle, profile).invoke();
 
@@ -66,30 +62,8 @@ public class AdminController {
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("result", "OK");
         responseBody.put("message", "App has been sucessfully added to the store.");
+
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
-
-
-    }*/
-
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public void upload(
-            @RequestParam("name") String name, @RequestParam("version") String version,
-            @RequestParam(value = "desc", required = false) String desc,
-            @RequestParam(value = "bundle") String bundle, @RequestParam(value = "profile") String profile,
-            @RequestParam("app") Part app,
-            @RequestParam(value = "smallIcon", required = false) Part smallIcon,
-            @RequestParam(value = "largeIcon", required = false) Part largeIcon, HttpServletResponse response) throws AppVersionAlreadyExistsException, FileWritingFailureException {
-
-        Pair<com.cacf.corporate.mobileappdownloader.entities.store.Bundle, AppVersion> newConf = new BindParametersToAppConf(name, version, desc, bundle, profile).invoke();
-
-        appsStoreService.addAppVersion(newConf, app, smallIcon, largeIcon);
-
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("result", "OK");
-        responseBody.put("message", "App has been sucessfully added to the store.");
-        // return new ResponseEntity<>(responseBody, HttpStatus.OK);
-
-        response.setStatus(200);
 
     }
 
@@ -120,6 +94,36 @@ public class AdminController {
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("result", "OK");
         responseBody.put("items", mapToBundlesDTOs(appsStoreService.findBundlesByIdentifierPrefix(identifier)));
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/bundle/{identifier}/profile/{profile}", method = RequestMethod.DELETE)
+    public ResponseEntity<Map<String, Object>> removeBundle(
+            @PathVariable("identifier") String identifier,
+            @PathVariable("profile") String profile) {
+
+        appsStoreService.removeBundle(identifier, profile);
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("result", "OK");
+        responseBody.put("message", "Bundle has been removed.");
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/bundle/{identifier}/profile/{profile}/version/{version:.+}", method = RequestMethod.DELETE)
+    public ResponseEntity<Map<String, Object>> removeApp(
+            @PathVariable("identifier") String identifier,
+            @PathVariable("profile") String profile,
+            @PathVariable("version") String version) {
+
+
+        appsStoreService.removeApp(identifier, profile, version);
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("result", "OK");
+        responseBody.put("message", "App has been removed.");
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
     }

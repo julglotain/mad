@@ -10,7 +10,9 @@
 
         <div class="container" ng-controller="AppsListCtrl">
 
-            <div ng-repeat='bundle in bundles'>
+            <h3>Apps store</h3>
+
+            <div ng-repeat="bundle in bundles | removeBundleIfNoAppVersions | orderBy:'identifier':true">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -21,6 +23,27 @@
                     <div class="panel-body">
                         <div class="apps-list" ng-repeat="version in bundle.versions | orderBy:'number':true">
                             <div class="row app-version-row">
+                                <div class="media col-xs-10 col-sm-10 col-md-10">
+                                    <a class="media-left media-middle" href="#" ng-click="downloadManifest(version.manifestDownloadUrl)">
+                                        <div class="pull-left" ng-switch="" on="version.iconDownloadUrl || 'null'">
+                                            <div ng-switch-when="null">
+                                                <span class="default-preview-icon glyphicon glyphicon-question-sign"></span>
+                                            </div>
+                                            <div ng-switch-default="">
+                                                <img class="preview-icon" ng-src="{{version.iconDownloadUrl}}" />
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">{{version.name}} - {{version.number}}</h4>
+                                        {{version.description}}
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2">
+                                    <a type="button" ng-click="downloadManifest(version.manifestDownloadUrl)"
+                                       class="pull-right dl_manifest_btn btn btn-success glyphicon glyphicon-cloud-download"></a>
+                                </div>
+                                <!--
                                 <div class="col-xs-10 col-sm-10 col-md-10">
                                     <div class="pull-left" ng-switch="" on="version.iconDownloadUrl || 'null'">
                                         <div ng-switch-when="null">
@@ -38,11 +61,15 @@
                                     <a type="button" ng-click="downloadManifest(version.manifestDownloadUrl)"
                                         class="pull-right dl_manifest_btn btn btn-success glyphicon glyphicon-cloud-download"></a>
                                 </div>
+                                -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div ng-show="!bundles.length" class="alert alert-info" role="alert">No apps in this store yet.</div>
+
         </div>
 
         <script th:src="@{/resources/scripts/vendors.js}"></script>

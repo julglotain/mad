@@ -6,24 +6,25 @@ import com.cacf.corporate.mobileappdownloader.entities.store.Bundle;
 import com.cacf.corporate.mobileappdownloader.repositories.AppsStoreRepository;
 import com.cacf.corporate.mobileappdownloader.security.User;
 import com.cacf.corporate.mobileappdownloader.utils.Pair;
-import com.cacf.corporate.mobileappdownloader.utils.ServletPartUtils;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
-import ma.glasnost.orika.impl.util.StringUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
-import javax.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -62,7 +63,7 @@ public class DefaultAppsStoreService implements AppsStoreService {
     }
 
     @Override
-    public AppVersion addAppVersion(Pair<Bundle, AppVersion> appConf, Part app, Part smallIcon, Part largeIcon) throws AppVersionAlreadyExistsException, FileWritingFailureException {
+    public AppVersion addAppVersion(Pair<Bundle, AppVersion> appConf, MultipartFile app, MultipartFile smallIcon, MultipartFile largeIcon) throws AppVersionAlreadyExistsException, FileWritingFailureException {
 
 
         // check if a version already exist for the bundle passed as arg
@@ -128,15 +129,15 @@ public class DefaultAppsStoreService implements AppsStoreService {
 
         uriLocations.setApp(appFilepath);
 
-        if(!StringUtils.isEmpty(smallIconFilepath) || !StringUtils.isEmpty(largeIconFilepath)){
+        if (!StringUtils.isEmpty(smallIconFilepath) || !StringUtils.isEmpty(largeIconFilepath)) {
 
             AppVersion.FilesURILocations.Icons iconsLocation = new AppVersion.FilesURILocations.Icons();
 
-            if(!StringUtils.isEmpty(smallIconFilepath)){
+            if (!StringUtils.isEmpty(smallIconFilepath)) {
                 iconsLocation.setSmall(smallIconFilepath);
             }
 
-            if(!StringUtils.isEmpty(largeIconFilepath)){
+            if (!StringUtils.isEmpty(largeIconFilepath)) {
                 iconsLocation.setLarge(largeIconFilepath);
             }
 
@@ -144,14 +145,16 @@ public class DefaultAppsStoreService implements AppsStoreService {
 
         }
 
+        appVersionBase.setFilesURILocations(uriLocations);
+
         return appVersionBase;
     }
 
-    private String writeFile(String filesDirectoryDestination, Part fileToWrite) throws IOException {
+    private String writeFile(String filesDirectoryDestination, MultipartFile fileToWrite) throws IOException {
 
         if (fileToWrite != null) {
 
-            File holder = new File(filesDirectoryDestination + File.separator + ServletPartUtils.getFileName(fileToWrite));
+            File holder = new File(filesDirectoryDestination + File.separator + fileToWrite.getOriginalFilename());// ServletPartUtils.getFileName(fileToWrite));
 
             OutputStream out = new FileOutputStream(holder);
 
@@ -188,7 +191,7 @@ public class DefaultAppsStoreService implements AppsStoreService {
 
     private Bundle lookForBundle(Set<Bundle> allBundles, String identifier, String profile) {
         for (Bundle bundle : allBundles) {
-            if (bundle.getIdentifier().equals(bundle) && bundle.getProfile().equalsIgnoreCase(profile)) {
+            if (bundle.getIdentifier().equals(identifier) && bundle.getProfile().equalsIgnoreCase(profile)) {
                 return bundle;
             }
         }
@@ -311,7 +314,90 @@ public class DefaultAppsStoreService implements AppsStoreService {
 
     @Override
     public Set<String> getAvailableProfiles() {
-
         return repository.getConfig().getAvailableProfiles();
     }
+
+    @Override
+    public void removeBundle(String identifier, String profile) {
+
+        AppsStore store = load();
+
+        for (Iterator<Bundle> i = store.getBundles().iterator(); i.hasNext(); ) {
+
+            Bundle bundle = i.next();
+
+            if(bundle.getIdentifier().equals(identifier) && bundle.getProfile().equalsIgnoreCase(profile)){
+
+                for(AppVersion app : bundle.getVersions()) {
+
+                    // remove associated files
+                    AppVersion.FilesURILocations filesURILocations = app.getFilesURILocations();
+
+                    if (!StringUtils.isEmpty(filesURILocations.getApp())) {
+
+                        removeAppVersionDirectory(filesURILocations.getApp());
+                    }
+
+                }
+
+                // remove appVersion entry
+                i.remove();
+
+            }
+
+        }
+
+        repository.persistConfig(store);
+
+
+    }
+
+    @Override
+    public void removeApp(String bundleIdentifier, String profile, String versionNumber) {
+
+        AppsStore store = load();
+
+        Bundle appBundle = lookForBundle(store.getBundles(), bundleIdentifier, profile);
+
+        if (appBundle != null) {
+
+            for (Iterator<AppVersion> i = appBundle.getVersions().iterator(); i.hasNext(); ) {
+                AppVersion app = i.next();
+                if (app.getNumber().equals(versionNumber)) {
+
+                    // remove associated files
+                    AppVersion.FilesURILocations filesURILocations = app.getFilesURILocations();
+
+                    if (!StringUtils.isEmpty(filesURILocations.getApp())) {
+
+                        removeAppVersionDirectory(filesURILocations.getApp());
+                    }
+
+                    // remove appVersion entry
+                    i.remove();
+
+                    repository.persistConfig(store);
+
+                }
+            }
+
+        }
+
+    }
+
+    private void removeAppVersionDirectory(String fileResourcePath) {
+
+        Resource fileResource = new PathMatchingResourcePatternResolver().getResource(fileResourcePath);
+
+        try {
+            if (fileResource.getFile().exists()) {
+
+                FileUtils.deleteDirectory(fileResource.getFile().getParentFile());
+
+            }
+        } catch (IOException e) {
+        }
+
+    }
+
 }

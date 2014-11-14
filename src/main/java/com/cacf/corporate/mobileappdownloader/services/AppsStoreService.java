@@ -5,6 +5,7 @@ import com.cacf.corporate.mobileappdownloader.entities.store.AppsStore;
 import com.cacf.corporate.mobileappdownloader.entities.store.Bundle;
 import com.cacf.corporate.mobileappdownloader.security.User;
 import com.cacf.corporate.mobileappdownloader.utils.Pair;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Part;
 import java.util.Set;
@@ -29,7 +30,7 @@ public interface AppsStoreService {
      */
     AppsStore getUserRightsFilteredAppsStore(User user);
 
-    AppVersion addAppVersion(Pair<Bundle, AppVersion> appConf, Part app, Part smallIcon, Part largeIcon) throws AppVersionAlreadyExistsException, FileWritingFailureException;
+    AppVersion addAppVersion(Pair<Bundle, AppVersion> appConf, MultipartFile app, MultipartFile smallIcon, MultipartFile largeIcon) throws AppVersionAlreadyExistsException, FileWritingFailureException;
 
     AppVersion findAppVersion(String bundle, String profile, String versionNumber) throws AppVersionNotFoundException;
 
@@ -38,5 +39,9 @@ public interface AppsStoreService {
     Set<String> getAvailableProfiles();
 
     Set<Bundle> findBundlesByIdentifierPrefix(String idPrefix);
+
+    void removeBundle(String identifier, String profile);
+
+    void removeApp(String bundleIdentifier, String profile, String versionNumber);
 
 }

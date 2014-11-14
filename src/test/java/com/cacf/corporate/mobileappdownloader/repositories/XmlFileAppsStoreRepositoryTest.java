@@ -27,9 +27,9 @@ public class XmlFileAppsStoreRepositoryTest {
     @Test
     public void should_load_apps_store() {
 
-        AppsStore store  = repo.getConfig();
+        AppsStore store = repo.getConfig();
 
-        Assert.assertEquals("Devrait etre egal à 2",2,store.getBundles().size());
+        Assert.assertEquals("Store should contains 3 bundles.", 3, store.getBundles().size());
 
     }
 
