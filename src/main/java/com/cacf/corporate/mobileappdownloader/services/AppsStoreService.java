@@ -40,6 +40,8 @@ public interface AppsStoreService {
 
     Set<Bundle> findBundlesByIdentifierPrefix(String idPrefix);
 
+    void createBundle(String identifier, String profile);
+
     void removeBundle(String identifier, String profile);
 
     void removeApp(String bundleIdentifier, String profile, String versionNumber);

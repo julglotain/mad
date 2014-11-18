@@ -5,6 +5,7 @@ import com.cacf.corporate.mobileappdownloader.entities.store.AppsStore;
 import com.cacf.corporate.mobileappdownloader.entities.store.Bundle;
 import com.cacf.corporate.mobileappdownloader.repositories.AppsStoreRepository;
 import com.cacf.corporate.mobileappdownloader.security.User;
+import com.cacf.corporate.mobileappdownloader.utils.EnvironmentUtils;
 import com.cacf.corporate.mobileappdownloader.utils.Pair;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
@@ -127,18 +128,20 @@ public class DefaultAppsStoreService implements AppsStoreService {
 
         AppVersion.FilesURILocations uriLocations = new AppVersion.FilesURILocations();
 
-        uriLocations.setApp(appFilepath);
+        String filePathEnvPrefix = EnvironmentUtils.resolveEnvironmentFilepathScheme();
+
+        uriLocations.setApp(filePathEnvPrefix + appFilepath);
 
         if (!StringUtils.isEmpty(smallIconFilepath) || !StringUtils.isEmpty(largeIconFilepath)) {
 
             AppVersion.FilesURILocations.Icons iconsLocation = new AppVersion.FilesURILocations.Icons();
 
             if (!StringUtils.isEmpty(smallIconFilepath)) {
-                iconsLocation.setSmall(smallIconFilepath);
+                iconsLocation.setSmall(filePathEnvPrefix + smallIconFilepath);
             }
 
             if (!StringUtils.isEmpty(largeIconFilepath)) {
-                iconsLocation.setLarge(largeIconFilepath);
+                iconsLocation.setLarge(filePathEnvPrefix + largeIconFilepath);
             }
 
             uriLocations.setIcons(iconsLocation);
@@ -252,6 +255,17 @@ public class DefaultAppsStoreService implements AppsStoreService {
 
     }
 
+    @Override
+    public void createBundle(String identifier, String profile) {
+
+        AppsStore storeConfig = load();
+
+        storeConfig.getBundles().add(new Bundle(identifier, profile));
+
+        repository.persistConfig(storeConfig);
+
+    }
+
     private Set<Bundle> filterBundlesByIdentifierPrefix(Set<Bundle> bundles, final String identifierPrefix) {
 
         return Sets.filter(bundles, new Predicate<Bundle>() {
@@ -326,9 +340,9 @@ public class DefaultAppsStoreService implements AppsStoreService {
 
             Bundle bundle = i.next();
 
-            if(bundle.getIdentifier().equals(identifier) && bundle.getProfile().equalsIgnoreCase(profile)){
+            if (bundle.getIdentifier().equals(identifier) && bundle.getProfile().equalsIgnoreCase(profile)) {
 
-                for(AppVersion app : bundle.getVersions()) {
+                for (AppVersion app : bundle.getVersions()) {
 
                     // remove associated files
                     AppVersion.FilesURILocations filesURILocations = app.getFilesURILocations();

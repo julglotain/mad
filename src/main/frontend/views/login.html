@@ -5,6 +5,7 @@
     <title>Please sign in to download an app</title>
 
     <link rel="stylesheet" th:href="@{/resources/styles/vendors.css}" />
+    <link rel="stylesheet" th:href="@{/resources/styles/bootstrap.css}" />
     <link rel="stylesheet" th:href="@{/resources/styles/app.css}" />
 
 </head>
@@ -17,7 +18,7 @@
             <input type="text" class="form-control" placeholder="Username" name="username" required="" autofocus="" />
             <input type="password" class="form-control" placeholder="Password" name="password" required="" />
             <p th:if="${invalidCredentials}" style="color: red;">Invalid credentials</p>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
         </form>
 
     </div>

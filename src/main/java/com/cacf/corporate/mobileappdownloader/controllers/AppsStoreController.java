@@ -70,7 +70,6 @@ public class AppsStoreController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> data() {
 
-
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         AppsStore userfilteredAppsStore = appsStoreService.getUserRightsFilteredAppsStore(user);
@@ -107,7 +106,7 @@ public class AppsStoreController {
 
         for (AppVersion appVersion : dto.getVersions()) {
 
-               buildProtecteResourcesUrl(dto.getIdentifier(),dto.getProfile(),appVersion);
+            buildProtecteResourcesUrl(dto.getIdentifier(), dto.getProfile(), appVersion);
 
         }
 
@@ -123,7 +122,7 @@ public class AppsStoreController {
 
         Map<String, String> builderPathValues = new HashMap<>();
         builderPathValues.put("bundle", bundle);
-        builderPathValues.put("profile",profile);
+        builderPathValues.put("profile", profile);
 
         builderPathValues.put("version", app.getNumber());
         app.setManifestDownloadUrl(builder.build(builderPathValues));

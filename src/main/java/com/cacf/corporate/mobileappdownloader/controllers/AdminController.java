@@ -67,33 +67,23 @@ public class AdminController {
 
     }
 
-    @ExceptionHandler(AppVersionAlreadyExistsException.class)
-    public ResponseEntity<Map<String, Object>> appVersionAlreadyExistsException(AppVersionAlreadyExistsException ex) {
-
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("result", "KO");
-        responseBody.put("message", "App has not been added to the store, because there is already a similar app version on the store.");
-        return new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE);
-
-    }
-
-    @ExceptionHandler(FileWritingFailureException.class)
-    public ResponseEntity<Map<String, Object>> fileWritingFailureException(FileWritingFailureException ex) {
-
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("result", "KO");
-        responseBody.put("message", "App has not been added to the store, an error occured when attempting to write app files.");
-        return new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
-
-    }
-
-
     @RequestMapping(value = "/bundle", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> searchBundles(@RequestParam("identifier") String identifier) {
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("result", "OK");
         responseBody.put("items", mapToBundlesDTOs(appsStoreService.findBundlesByIdentifierPrefix(identifier)));
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/bundle", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> createBundle(@RequestParam("identifier") String identifier, @RequestParam("profile") String profile) {
+
+        appsStoreService.createBundle(identifier, profile);
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("result", "OK");
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
     }
@@ -125,6 +115,26 @@ public class AdminController {
         responseBody.put("result", "OK");
         responseBody.put("message", "App has been removed.");
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
+
+    }
+
+    @ExceptionHandler(AppVersionAlreadyExistsException.class)
+    public ResponseEntity<Map<String, Object>> appVersionAlreadyExistsException(AppVersionAlreadyExistsException ex) {
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("result", "KO");
+        responseBody.put("message", "App has not been added to the store, because there is already a similar app version on the store.");
+        return new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE);
+
+    }
+
+    @ExceptionHandler(FileWritingFailureException.class)
+    public ResponseEntity<Map<String, Object>> fileWritingFailureException(FileWritingFailureException ex) {
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("result", "KO");
+        responseBody.put("message", "App has not been added to the store, an error occured when attempting to write app files.");
+        return new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 

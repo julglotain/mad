@@ -1,15 +1,14 @@
-# INSTALLATION
+Configuration
+==================
 
-- Copier les différents fichiers de /conf-sample et les placer dans un répertoire
-
-- Editer les propriétées du fichier mad-config.properties et renseigner les paths des fichiers de configuration apps-bundle.xml et users-store.properties
-
-- Editer les propriétés des fichiers de configuration apps-store.xml et users-store.properties pour une configuration initiale
-
-- Lancer le daemon Tomcat avec la variable d'environnement -Dmad.config.file=/path/to/mad-config.properties
+* Copier les différents fichiers de /conf-sample et les placer dans un répertoire
+* Editer les propriétées du fichier mad-config.properties et renseigner les paths des fichiers de configuration apps-bundle.xml et users-store.properties
+* Editer les propriétés des fichiers de configuration apps-store.xml et users-store.properties pour une configuration initiale
+* Lancer le daemon Tomcat avec la variable d'environnement -Dmad.config.file=/path/to/mad-config.properties
 
 
-Exemple de configuration :
+Exemple de configuration
+------------------------
 
     ####################################################################
     #

@@ -1,0 +1,4 @@
+<a>
+    <span bind-html-unsafe="match.model.identifier | typeaheadHighlight:query"></span>
+    <span ng-if="match.model.profile" style="font-weight: bold;">&nbsp;-&nbsp;{{match.model.profile}}</span>
+</a>

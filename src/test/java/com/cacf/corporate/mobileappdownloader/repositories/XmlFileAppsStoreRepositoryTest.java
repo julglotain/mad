@@ -1,7 +1,7 @@
 package com.cacf.corporate.mobileappdownloader.repositories;
 
 import com.cacf.corporate.mobileappdownloader.config.MarshallingConfiguration;
-import com.cacf.corporate.mobileappdownloader.config.PropertiesConfiguration;
+import com.cacf.corporate.mobileappdownloader.config.PropertiesTestConfiguration;
 import com.cacf.corporate.mobileappdownloader.config.RepositoriesConfiguration;
 import com.cacf.corporate.mobileappdownloader.config.ResourcesConfiguration;
 import com.cacf.corporate.mobileappdownloader.entities.store.AppsStore;
@@ -17,7 +17,7 @@ import javax.inject.Inject;
  * Created by jug on 06/11/2014.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RepositoriesConfiguration.class, MarshallingConfiguration.class, ResourcesConfiguration.class, PropertiesConfiguration.class})
+@ContextConfiguration(classes = {RepositoriesConfiguration.class, MarshallingConfiguration.class, ResourcesConfiguration.class, PropertiesTestConfiguration.class})
 public class XmlFileAppsStoreRepositoryTest {
 
 

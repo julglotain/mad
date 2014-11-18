@@ -1,28 +1,6 @@
 angular
-    .module('mad.administration', ['ui.bootstrap', 'mad.services', 'mad.directives'])
-    .service('UploadService', ['$http', function ($http) {
+    .module('mad.administration', ['ui.bootstrap', 'mad.services', 'mad.directives', 'mad.partials', 'mad.config', 'ngAnimate', 'cgBusy'])
 
-        function createFormDataObject(model) {
-            var fd = new FormData();
-            angular.forEach(model, function (v, k) {
-                fd.append(k, v);
-            });
-            return fd;
-        }
-
-        this.send = function (formData, url, success, failure) {
-
-            $http
-                .post(url, createFormDataObject(formData), {
-                    transformRequest: angular.identity,
-                    headers: {'Content-Type': undefined}
-                })
-                .success(success)
-                .error(failure);
-
-        };
-
-    }])
     .controller('AddNewAppFormCtrl', ['$scope', '$rootScope', 'UploadService', '$timeout', function ($scope, $rootScope, UploadService, $timeout) {
 
         $scope.formData = {};
@@ -56,6 +34,7 @@ angular
                 function (response) {
 
                     $scope.formData = {};
+
                     ok(response.message);
                     $timeout(clear, 3000);
 
@@ -121,17 +100,52 @@ angular
 
 
     }])
-    .controller('ManageBundlesCtrl', ['$scope', 'BundlesListService', '$http', function ($scope, BundlesListService, $http) {
+    .controller('ManageBundlesCtrl', ['$scope', '$rootScope', 'BundlesListService', '$http', '$log', function ($scope, $rootScope, BundlesListService, $http, $log) {
 
         $scope.bundles = [];
+        $scope.bundleLoaded = false;
+        $scope.formData = {};
+
+        $scope.message = 'Please Wait...';
+        $scope.promise = null;
 
         function fetch() {
-            BundlesListService
-                .fetch()
+
+            $scope.promise = BundlesListService.fetch();
+
+            $scope.promise
                 .success(function (result) {
+                    $scope.bundleLoaded = true;
                     $scope.bundles = result.bundles;
                 });
+
         }
+
+        // immediatelly fetch bundles list
+        fetch();
+
+        // when new app is added we want to refresh the bundles and apps list
+        $rootScope.$on('admin:app-added', fetch);
+        $rootScope.$on('admin:app-removed', fetch);
+
+        // when a bundle is added or removed we want to refresh
+        $rootScope.$on('admin:bundle-added', fetch);
+        $rootScope.$on('admin:bundle-remove', fetch);
+
+        $scope.createBundle = function (bundle) {
+
+            $log.info('About to create a bew bundle: ' + $scope.formData.identifier + ', ' + $scope.formData.profile);
+
+            return $http
+                .post('./admin/bundle', $.param($scope.formData))
+                .success(function () {
+
+                    $scope.formData = {};
+                    $rootScope.$broadcast('admin:bundle-added');
+                    fetch();
+
+                });
+        };
 
         $scope.removeBundle = function (bundle) {
             console.log('About to remove bundle: ' + bundle.identifier);
@@ -139,7 +153,10 @@ angular
             $http
                 .delete('./admin/bundle/' + bundle.identifier + '/profile/' + bundle.profile, {
                 }).success(function () {
-                    console.log(arguments);
+
+                    $rootScope.$broadcast('admin:bundle-added');
+                    fetch();
+
                 });
         };
 
