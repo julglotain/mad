@@ -1,10 +1,13 @@
 @import "components";
 
+html, body {
+  min-height: 100%;
+}
 
 body {
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee;
+  background: linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
 }
 
 .apps-list {
@@ -39,38 +42,46 @@ body {
 }
 
 .form-signin {
+
   max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
-}
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-}
-.form-signin .checkbox {
-  font-weight: normal;
-}
-.form-signin .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
-}
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+
+  button[type="submit"] {
+    margin-top: 5px;
+  }
+
+  .input-group.username {
+
+    .input-group-addon {
+
+      border-bottom-left-radius: 0;
+
+    }
+
+    input {
+
+      border-bottom-right-radius: 0;
+
+    }
+
+  }
+
+  .input-group.password {
+
+    .input-group-addon {
+
+      border-top-left-radius: 0;
+
+    }
+
+    input {
+
+      border-top-right-radius: 0;
+
+    }
+
+  }
+
+
 }
 
 .app-version-row {
@@ -86,6 +97,10 @@ body {
 
 .inner-tab-content-wrapper {
   padding: 3% 5%;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  background-color: #fff;
 }
 
 #admin-page {
@@ -96,6 +111,7 @@ body {
   position: relative;
   overflow: hidden;
 }
+
 .btn-file input[type=file] {
   position: absolute;
   top: 0;
@@ -110,6 +126,7 @@ body {
   cursor: inherit;
   display: block;
 }
+
 input[readonly] {
   background-color: white !important;
   cursor: text !important;
@@ -117,4 +134,30 @@ input[readonly] {
 
 .remove-app-icon {
   margin-left: 5px;
+}
+
+.invalid-credentials {
+  padding: 5px;
+  margin-top: 5px;
+  border-radius: 2px;
+  text-align: center;
+}
+
+#admin-page {
+  h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+}
+
+
+#manage-bundles-pane {
+
+  margin-left: 0;
+  margin-right: 0;
+
+}
+
+.has-feedback label~.form-control-feedback {
+  top: 36px;
 }

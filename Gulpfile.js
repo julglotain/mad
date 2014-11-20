@@ -63,7 +63,7 @@ gulp.task('fonts', ['clean'], function () {
     return gulp.src($.mainBowerFiles())
         .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
         .pipe($.flatten())
-        .pipe(gulp.dest(config.baseDist + '/fonts'))
+        .pipe(gulp.dest(config.baseDist + '/assets/fonts'))
         .pipe($.size());
 });
 
@@ -105,8 +105,6 @@ gulp.task('styles-vendor', ['clean'], function () {
 
 });
 
-
-
 gulp.task('partials', ['clean'], function () {
 
     return gulp.src(config.baseSrc + '/partials/*.tpl.html')
@@ -119,4 +117,14 @@ gulp.task('partials', ['clean'], function () {
 
 });
 
-gulp.task('build', ['html', 'styles', 'scripts', 'fonts', 'partials']);
+gulp.task('images', ['clean'], function(){
+
+    return gulp.src(config.baseSrc + '/assets/images/*')
+        .pipe($.imagemin({
+            progressive: true
+        }))
+        .pipe(gulp.dest(config.baseDist + '/assets/images'));
+
+});
+
+gulp.task('build', ['html', 'styles', 'scripts', 'fonts', 'images', 'partials']);

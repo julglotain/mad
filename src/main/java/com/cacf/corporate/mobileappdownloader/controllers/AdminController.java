@@ -53,7 +53,9 @@ public class AdminController {
             @RequestParam(value = "bundle") String bundle, @RequestParam(value = "profile") String profile,
             @RequestParam("app") MultipartFile app,
             @RequestParam(value = "smallIcon", required = false) MultipartFile smallIcon,
-            @RequestParam(value = "largeIcon", required = false) MultipartFile largeIcon, HttpServletResponse response) throws AppVersionAlreadyExistsException, FileWritingFailureException {
+            @RequestParam(value = "largeIcon", required = false) MultipartFile largeIcon, HttpServletResponse response) throws AppVersionAlreadyExistsException, FileWritingFailureException, InterruptedException {
+
+       Thread.sleep(3000);
 
         Pair<com.cacf.corporate.mobileappdownloader.entities.store.Bundle, AppVersion> newConf = new BindParametersToAppConf(name, version, desc, bundle, profile).invoke();
 
@@ -115,26 +117,6 @@ public class AdminController {
         responseBody.put("result", "OK");
         responseBody.put("message", "App has been removed.");
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
-
-    }
-
-    @ExceptionHandler(AppVersionAlreadyExistsException.class)
-    public ResponseEntity<Map<String, Object>> appVersionAlreadyExistsException(AppVersionAlreadyExistsException ex) {
-
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("result", "KO");
-        responseBody.put("message", "App has not been added to the store, because there is already a similar app version on the store.");
-        return new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE);
-
-    }
-
-    @ExceptionHandler(FileWritingFailureException.class)
-    public ResponseEntity<Map<String, Object>> fileWritingFailureException(FileWritingFailureException ex) {
-
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("result", "KO");
-        responseBody.put("message", "App has not been added to the store, an error occured when attempting to write app files.");
-        return new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 

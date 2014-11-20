@@ -1,35 +1,44 @@
 {
-    "name": "MobileAppDownloader",
-    "version": "1.5.0",
-    "authors": [
-        "Julien GLOTAIN <jglotain@gmail.com>"
-    ],
-    "license": "MIT",
-    "private": true,
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ],
-    "dependencies": {
-        "angular": "~1.3.2",
-        "bootstrap-sass-official": "~3.3.0",
-        "angular-ui-bootstrap-bower": "~0.11.2",
-        "bootstrap-select": "~1.6.3",
-        "angular-busy": "~4.1.1",
-        "angular-animate": "~1.3.3"
+  "name": "MobileAppDownloader",
+  "version": "1.5.0",
+  "authors": [
+    "Julien GLOTAIN <jglotain@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.2",
+    "bootstrap-sass-official": "~3.3.0",
+    "angular-ui-bootstrap-bower": "~0.11.2",
+    "bootstrap-select": "~1.6.3",
+    "angular-busy": "~4.1.1",
+    "angular-animate": "~1.3.3",
+    "fontawesome": "~4.2.0",
+    "angular-touch": "~1.3.3"
+  },
+  "overrides": {
+    "bootstrap-select": {
+      "main": [
+        "less/bootstrap-select.less",
+        "dist/js/bootstrap-select.js"
+      ]
     },
-
-    "overrides": {
-        "bootstrap-select": {
-            "main": [
-                "less/bootstrap-select.less",
-                "dist/js/bootstrap-select.js"
-            ]
-        }
-
+    "fontawesome": {
+      "main": [
+        "scss/font-awesome.scss",
+        "fonts/fontawesome-webfont.woff",
+        "fonts/fontawesome-webfont.ttf",
+        "fonts/fontawesome-webfont.svg",
+        "fonts/fontawesome-webfont.eot",
+        "fonts/FontAwesome.otf"
+      ]
     }
-
+  }
 }

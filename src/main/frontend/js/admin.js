@@ -9,14 +9,17 @@ angular
         $scope.uploadLabelMessage = "";
         $scope.showUploadLabelMessage = false;
 
+        $scope.message = 'Uploading app, please wait...';
+        $scope.promise = null;
+
         function ok(msg) {
-            $scope.uploadLabelMessageType = "label-success";
+            $scope.uploadLabelMessageType = "alert-success";
             $scope.uploadLabelMessage = msg;
             $scope.showUploadLabelMessage = true;
         }
 
         function ko(msg) {
-            $scope.uploadLabelMessageType = "label-danger";
+            $scope.uploadLabelMessageType = "alert-danger";
             $scope.uploadLabelMessage = msg;
             $scope.showUploadLabelMessage = true;
         }
@@ -29,24 +32,25 @@ angular
 
         $scope.submit = function () {
 
-            UploadService
-                .send($scope.formData, './admin/upload',
-                function (response) {
+            $scope.promise = UploadService.send($scope.formData, './admin/upload');
+
+            $scope.promise
+                .success(function (response) {
 
                     $scope.formData = {};
 
                     ok(response.message);
-                    $timeout(clear, 3000);
+                    $timeout(clear, 6000);
 
                     // let's others be aware of the happy event
                     $rootScope.$broadcast('admin:app-added');
 
-                },
-                function (response) {
+                })
+                .error(function (response) {
                     ko(response.message);
                     $timeout(clear, 10000);
-                }
-            );
+                });
+
         };
 
     }])

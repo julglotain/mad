@@ -1,5 +1,5 @@
 angular
-    .module('mad.store', ['mad.services','mad.filters', 'mad.partials', 'cgBusy'])
+    .module('mad.store', ['mad.services', 'mad.filters', 'mad.partials', 'mad.config', 'cgBusy'])
     .controller('AppsListCtrl', ['$scope', '$window', 'BundlesListService', function ($scope, $window, BundlesListService) {
 
         $scope.bundles = [];
@@ -10,6 +10,17 @@ angular
         $scope.loadingTemplateUrl = '/partials/loading.tpl.html';
 
 
+        function computeTotalNumberOfApp(bundles) {
+
+            if(!bundles.length) return 0;
+
+            return $scope.bundles.map(function (b) {
+                return b.versions.length;
+            }).reduce(function (prev, curr) {
+                return prev + curr;
+            });
+        }
+
         $scope.fetch = function () {
 
             $scope.promise = BundlesListService.fetch();
@@ -17,7 +28,7 @@ angular
             $scope.promise.success(function (result) {
                 $scope.loaded = true;
                 $scope.bundles = result.bundles;
-                $scope.numberTotalOfApps = $scope.bundles.map(function(b){return b.versions.length;}).reduce(function(prev, curr){return prev + curr;});
+                $scope.numberTotalOfApps = computeTotalNumberOfApp($scope.bundles);
             });
 
         };

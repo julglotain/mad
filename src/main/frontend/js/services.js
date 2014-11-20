@@ -10,15 +10,13 @@ angular
     .service('UploadService', ['$http', 'FormUtils', function ($http, FormUtils) {
 
         return {
-            send: function (formData, url, success, failure) {
+            send: function (formData, url) {
 
-                $http
+                return $http
                     .post(url, FormUtils.createFormDataObject(formData), {
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
-                    })
-                    .success(success)
-                    .error(failure);
+                    });
 
             }
         };

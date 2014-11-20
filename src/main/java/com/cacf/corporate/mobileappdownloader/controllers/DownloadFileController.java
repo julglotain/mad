@@ -5,9 +5,7 @@ import com.cacf.corporate.mobileappdownloader.download.InvalidDownloadFileTypeEx
 import com.cacf.corporate.mobileappdownloader.download.InvalidTokenException;
 import com.cacf.corporate.mobileappdownloader.entities.store.AppVersion;
 import com.cacf.corporate.mobileappdownloader.entities.store.Bundle;
-import com.cacf.corporate.mobileappdownloader.services.AppVersionNotFoundException;
-import com.cacf.corporate.mobileappdownloader.services.AppsStoreService;
-import com.cacf.corporate.mobileappdownloader.services.TokenService;
+import com.cacf.corporate.mobileappdownloader.services.*;
 import com.cacf.corporate.mobileappdownloader.utils.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,17 +37,22 @@ public class DownloadFileController {
     @Inject
     private AppsStoreService appsStoreService;
 
+    @Inject
+    private UserRightsAccessHelper userRightsAccessHelper;
+
     public static final String DOWNLOAD_APP_FILE_ROUTE_PATH =
             "/store/dl/{token}/bundle/{bundle}/profile/{profile}/version/{version}/file/{type}";
 
-    @RequestMapping(value = DOWNLOAD_APP_FILE_ROUTE_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @ResponseBody
-    public ResponseEntity<? extends Resource> download(
+    @RequestMapping(value = DOWNLOAD_APP_FILE_ROUTE_PATH, method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public @ResponseBody ResponseEntity<? extends Resource> download(
             @PathVariable("token") String token,
             @PathVariable("bundle") String bundle,
             @PathVariable("profile") String profile,
             @PathVariable("version") String version,
-            @PathVariable("type") String type) throws InvalidTokenException, IOException, InvalidDownloadFileTypeException, AppVersionNotFoundException {
+            @PathVariable("type") String type)
+            throws InvalidTokenException, IOException, InvalidDownloadFileTypeException,
+            AppVersionNotFoundException, AccessToProtectedResourceFailedException {
 
 
         boolean isTokenValid = tokenService.isValid(token);
@@ -60,6 +63,10 @@ public class DownloadFileController {
 
             throw new InvalidTokenException("Download token {" + token + "} is invalid.");
 
+        }
+
+        if (!userRightsAccessHelper.hasAccessTo(bundle, profile)) {
+            throw new AccessToProtectedResourceFailedException();
         }
 
         // recherche de la configuration de l'app pour laquelle on souhaite produire un manifest
@@ -120,33 +127,5 @@ public class DownloadFileController {
 
     }
 
-
-    @ExceptionHandler(AppVersionNotFoundException.class)
-    public String applicationNotFoundHandler(AppVersionNotFoundException ex) {
-
-        log.error("Application not found: ", ex);
-
-        return "applicationNotFound";
-
-    }
-
-
-    @ExceptionHandler(InvalidTokenException.class)
-    public String invalidToken(InvalidTokenException ex) {
-
-        log.error("InvalidTokenException", ex);
-
-        return "invalidToken";
-
-    }
-
-    @ExceptionHandler(Exception.class)
-    public String exception(Exception e) {
-
-        log.debug("Base Exception ", e);
-
-        return "somethingWentWrong";
-
-    }
 
 }

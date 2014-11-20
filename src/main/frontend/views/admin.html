@@ -14,24 +14,28 @@
 
         <div class="container">
 
-            <h3>Admin</h3>
+            <h1>Administration</h1>
 
             <!-- first row  -->
             <tabset justified="false">
 
-                <tab heading="Upload an app">
+                <tab>
 
-                    <div class="inner-tab-content-wrapper">
+                    <tab-heading>
+                        <i class="fa fa-cloud-upload"></i> Upload an app
+                    </tab-heading>
 
-                        <div class="well">
+                    <div class="inner-tab-content-wrapper" id="upload-app-pane" ng-controller="AddNewAppFormCtrl">
 
-                            <h4>New app</h4>
+                        <h3>New app</h3>
 
-                            <form class="form-horizontal container-fluid upload-form" role="form" ng-controller="AddNewAppFormCtrl" ng-submit="submit()">
+                        <div cg-busy="{promise:promise, message:message}" class="well">
+
+                            <form class="form-horizontal container-fluid upload-form" role="form" ng-submit="submit()">
                                 <div class="row">
                                     <div class="col-md-5">
 
-                                        <div class="form-group" ng-controller="BundleListCompletionCtrl">
+                                        <div class="form-group has-feedback" ng-controller="BundleListCompletionCtrl">
                                             <label for="bundle" class="control-label">Bundle</label>
                                             <input type="text" id="bundle" name="bundle" ng-model="formData.bundle"
                                                    typeahead="bundle for bundle in getBundles($viewValue)"
@@ -41,7 +45,7 @@
                                                    typeahead-min-length="3"
                                                    typeahead-wait-ms="500"
                                                    class="form-control" placeholder="Ex: com.xyz.app ..." required>
-                                            <i ng-show="loadingBundles" class="glyphicon glyphicon-refresh"></i>
+                                            <i ng-show="loadingBundles" class="fa fa-refresh fa-lg form-control-feedback"></i>
                                         </div>
 
                                         <div class="form-group">
@@ -69,21 +73,27 @@
                                     <div class="col-md-6 col-md-offset-1">
 
                                         <div class="form-group">
-                                            <label for="app" class="control-label">App</label>
+                                            <label for="app" class="control-label">
+                                                App file  <i class="fa fa-mobile" style="font-size: 1.5em;"></i>
+                                            </label>
                                             <bs-input-file name="app" file-model="formData.app"></bs-input-file>
                                         </div>
                                         <div class="form-group">
-                                            <label for="small_icon" class="control-label">Small icon</label>
+                                            <label for="small_icon" class="control-label">
+                                                Small icon  <i class="fa fa-file-image-o"></i>
+                                            </label>
                                             <bs-input-file name="small_icon" file-model="formData.smallIcon"></bs-input-file>
                                         </div>
                                         <div class="form-group">
-                                            <label for="large_icon" class="control-label">Large icon</label>
+                                            <label for="large_icon" class="control-label">
+                                                Large icon   <i class="fa fa-file-image-o" style="font-size: 1.2em;"></i>
+                                            </label>
                                             <bs-input-file name="large_icon" file-model="formData.largeIcon"></bs-input-file>
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-success btn-block">Upload the new app</button>
-                                            <span ng-show="showUploadLabelMessage" class="label {{uploadLabelMessageType}}">{{uploadLabelMessage}}</span>
                                         </div>
+                                        <div ng-show="showUploadLabelMessage" class="alert {{uploadLabelMessageType}}" role="alert">{{uploadLabelMessage}}</div>
 
                                     </div>
                                 </div>
@@ -95,24 +105,48 @@
 
                 </tab>
 
-                <tab heading="Manage apps">
+                <tab>
 
-                    <div class="inner-tab-content-wrapper" ng-controller="ManageAppsCtrl">
+                    <tab-heading>
+                        <i class="fa fa-cube"></i> Manage apps
+                    </tab-heading>
 
-                        <h4>All apps grouped by bundle</h4>
+                    <div class="inner-tab-content-wrapper" id="manage-apps-pane" ng-controller="ManageAppsCtrl">
+
+                        <h3>All apps grouped by bundle</h3>
 
                         <div cg-busy="{promise:promise}">
 
                             <accordion close-others="true">
-                                <accordion-group ng-repeat="bundle in bundles | orderBy:'identifier':false">
+                                <accordion-group ng-repeat="bundle in bundles | orderBy:'identifier':false" is-open="status.open">
                                     <accordion-heading>
-                                        {{bundle.identifier}} - {{bundle.profile}}
+                                        {{bundle.identifier}} - {{bundle.profile}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
                                     </accordion-heading>
+                                    <table class="table table-striped" ng-hide="!bundle.versions.length">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Version</th>
+                                                <th>Description</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="version in bundle.versions | orderBy:'number':true">
+                                                <td>{{version.name}}</td>
+                                                <td>{{version.number}}</td>
+                                                <td>{{version.description || 'No description.'}}</td>
+                                                <td><a ng-href="#" ng-click="removeAppVersion(bundle,version)" class="remove-app-icon glyphicon glyphicon-trash"></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--
                                     <ul class="list-group" ng-hide="!bundle.versions.length">
                                         <li ng-repeat="version in bundle.versions | orderBy:'number':true" class="list-group-item">{{version.name}} - {{version.number}} <a ng-href="#" ng-click="removeAppVersion(bundle,version)" class="remove-app-icon glyphicon glyphicon-trash"></a></li>
                                     </ul>
+                                    -->
                                     <div ng-show="!bundle.versions.length">
-                                        <span>No app,</span>&nbsp;<a ng-click="removeBundle(bundle)" title="Delete this bundle and all its apps" class="" ng-href="#">remove</a>&nbsp;<span>this bundle ?</span>
+                                        <span>No app version,</span>&nbsp;<a ng-click="removeBundle(bundle)" title="Delete this bundle and all its apps" class="" ng-href="#">remove</a>&nbsp;<span>this bundle ?</span>
                                     </div>
                                 </accordion-group>
                             </accordion>
@@ -125,15 +159,19 @@
 
                 </tab>
 
-                <tab heading="Manage bundles">
+                <tab>
 
-                    <div class="inner-tab-content-wrapper row" ng-controller="ManageBundlesCtrl">
+                    <tab-heading>
+                        <i class="fa fa-cubes"></i> Manage bundles
+                    </tab-heading>
+
+                    <div class="inner-tab-content-wrapper row" id="manage-bundles-pane" ng-controller="ManageBundlesCtrl">
 
                         <div class="col-md-5">
 
-                            <div class="well">
+                            <h3>New bundle</h3>
 
-                                <h4>New bundle</h4>
+                            <div class="well">
 
                                 <form role="form" ng-submit="createBundle()">
 
@@ -163,7 +201,7 @@
 
                         <div class="col-md-6 col-md-offset-1">
 
-                            <h4>All bundles</h4>
+                            <h3 style="margin-top: 0;">All bundles</h3>
 
                             <div cg-busy="{promise:promise}">
 

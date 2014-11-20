@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="mad.login">
 <head>
     <meta charset="UTF-8"/>
     <title>Please sign in to download an app</title>
@@ -13,12 +13,24 @@
 
     <div class="container">
 
-        <form class="form-signin" th:action="@{/login/auth}" method="post" role="form">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <input type="text" class="form-control" placeholder="Username" name="username" required="" autofocus="" />
-            <input type="password" class="form-control" placeholder="Password" name="password" required="" />
-            <p th:if="${invalidCredentials}" style="color: red;">Invalid credentials</p>
-            <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
+        <form class="form-signin center-block" th:action="@{/login/auth}" method="post" role="form">
+            <h1>Apps store</h1>
+            <div class="input-group username">
+                <span class="input-group-addon">
+                    <i class="fa fa-user fa-fw"></i>
+                </span>
+                <input type="text" class="form-control input-lg" placeholder="Username" name="username" required autofocus />
+            </div>
+            <div class="input-group password">
+                <span class="input-group-addon">
+                    <i class="fa fa-lock fa-fw"></i>
+                </span>
+                <input type="password" class="form-control input-lg" placeholder="Password" name="password" required />
+            </div>
+            <p th:if="${invalidCredentials}" class="bg-danger invalid-credentials">Invalid credentials</p>
+            <button class="btn btn-lg btn-primary btn-block" ng-click type="submit">
+                Sign in <i class="fa fa-sign-in fa-fw"></i>
+            </button>
         </form>
 
     </div>
