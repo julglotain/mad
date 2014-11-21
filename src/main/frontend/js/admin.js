@@ -1,170 +1,197 @@
 angular
-    .module('mad.administration', ['ui.bootstrap', 'mad.services', 'mad.directives', 'mad.partials', 'mad.config', 'ngAnimate', 'cgBusy'])
+    .module('mad.administration', ['ui.bootstrap', 'mad.services', 'mad.directives', 'mad.partials', 'mad.config', 'mad.providers', 'ngAnimate', 'cgBusy'])
 
-    .controller('AddNewAppFormCtrl', ['$scope', '$rootScope', 'UploadService', '$timeout', function ($scope, $rootScope, UploadService, $timeout) {
+    .controller('AddNewAppFormCtrl', ['$scope', '$rootScope', 'UploadService', '$timeout',
+        function ($scope, $rootScope, UploadService, $timeout) {
 
-        $scope.formData = {};
+            $scope.formData = {};
 
-        $scope.uploadLabelMessageType = "";
-        $scope.uploadLabelMessage = "";
-        $scope.showUploadLabelMessage = false;
+            $scope.uploadResultMessage = "";
+            $scope.uploadResultClass = "";
 
-        $scope.message = 'Uploading app, please wait...';
-        $scope.promise = null;
+            $scope.message = 'Uploading app, please wait...';
+            $scope.promise = null;
 
-        function ok(msg) {
-            $scope.uploadLabelMessageType = "alert-success";
-            $scope.uploadLabelMessage = msg;
-            $scope.showUploadLabelMessage = true;
-        }
+            function ok(msg) {
+                $scope.uploadResultMessage = msg;
+                $scope.uploadResultClass = "alert-success";
+            }
 
-        function ko(msg) {
-            $scope.uploadLabelMessageType = "alert-danger";
-            $scope.uploadLabelMessage = msg;
-            $scope.showUploadLabelMessage = true;
-        }
+            function ko(msg) {
+                $scope.uploadResultMessage = msg;
+                $scope.uploadResultClass = "alert-danger";
+            }
 
-        function clear() {
-            $scope.uploadLabelMessageType = "";
-            $scope.uploadLabelMessage = "";
-            $scope.showUploadLabelMessage = false;
-        }
+            function clear(delay) {
 
-        $scope.submit = function () {
+                function reset() {
+                    $scope.uploadResultMessage = "";
+                    $scope.uploadResultClass = "";
+                }
 
-            $scope.promise = UploadService.send($scope.formData, './admin/upload');
+                if (delay) {
+                    $timeout(reset, delay);
+                } else {
+                    reset();
+                }
+            }
 
-            $scope.promise
-                .success(function (response) {
+            $scope.submit = function () {
 
-                    $scope.formData = {};
+                $scope.promise = UploadService.send($scope.formData, './admin/upload');
 
-                    ok(response.message);
-                    $timeout(clear, 6000);
+                $scope.promise
+                    .success(function (response) {
 
-                    // let's others be aware of the happy event
-                    $rootScope.$broadcast('admin:app-added');
+                        $scope.formData = {};
 
-                })
-                .error(function (response) {
-                    ko(response.message);
-                    $timeout(clear, 10000);
-                });
+                        ok(response.message);
+                        clear(6000);
 
-        };
+                        // let's others be aware of the happy event
+                        $rootScope.$broadcast('admin:app-added');
 
-    }])
-    .controller('ManageAppsCtrl', ['$scope', '$rootScope', 'BundlesListService', '$http', function ($scope, $rootScope, BundlesListService, $http) {
+                    })
+                    .error(function (response) {
 
-        $scope.bundles = [];
+                        ko(response.message);
+                        clear(10000);
 
-        // fetch bundles list
-        function fetch() {
-            BundlesListService
-                .fetch()
-                .success(function (result) {
-                    $scope.bundles = result.bundles;
-                });
-        }
+                    });
 
-        // when new app is added we want to refresh the bundles and apps list
-        $rootScope.$on('admin:app-added', fetch);
+            };
 
-        // when a bundle is added or removed we want to refresh
-        $rootScope.$on('admin:bundle-added', fetch);
-        $rootScope.$on('admin:bundle-remove', fetch);
+        }])
 
-        // immediatelly fetch bundles list
-        fetch();
+    .controller('ManageAppsCtrl', ['$scope', '$rootScope', 'BundlesListService', '$http',
+        function ($scope, $rootScope, BundlesListService, $http) {
 
-        // remove an app version
-        $scope.removeAppVersion = function (bundle, version) {
-            console.log('About to remove app: ' + bundle.identifier + ' - ' + version.number);
+            $scope.bundles = [];
 
-            $http
-                .delete('./admin/bundle/' + bundle.identifier + '/profile/' + bundle.profile + '/version/' + version.number)
-                .success(function () {
-                    fetch();
-                    $rootScope.$broadcast('admin:app-removed');
-                });
+            // fetch bundles list
+            function fetch() {
+                BundlesListService
+                    .fetch()
+                    .success(function (result) {
+                        $scope.bundles = result.bundles;
+                    });
+            }
 
-        };
+            // when new app is added we want to refresh the bundles and apps list
+            $rootScope.$on('admin:app-added', fetch);
 
-        // remove an a bundle
-        $scope.removeBundle = function (bundle) {
-            console.log('About to remove bundle: ' + bundle.identifier);
+            // when a bundle is added or removed we want to refresh
+            $rootScope.$on('admin:bundle-added', fetch);
+            $rootScope.$on('admin:bundle-remove', fetch);
 
-            $http
-                .delete('./admin/bundle/' + bundle.identifier + '/profile/' + bundle.profile)
-                .success(function () {
-                    fetch();
-                    $rootScope.$broadcast('admin:bundle-removed');
-                });
-        };
+            // immediatelly fetch bundles list
+            fetch();
+
+            // remove an app version
+            $scope.removeAppVersion = function (bundle, version) {
+                console.log('About to remove app: ' + bundle.identifier + ' - ' + version.number);
+
+                $http
+                    .delete('./admin/bundle/' + bundle.identifier + '/profile/' + bundle.profile + '/version/' + version.number)
+                    .success(function () {
+                        fetch();
+                        $rootScope.$broadcast('admin:app-removed');
+                    });
+
+            };
+
+            // remove an a bundle
+            $scope.removeBundle = function (bundle) {
+                console.log('About to remove bundle: ' + bundle.identifier);
+
+                $http
+                    .delete('./admin/bundle/' + bundle.identifier + '/profile/' + bundle.profile)
+                    .success(function () {
+                        fetch();
+                        $rootScope.$broadcast('admin:bundle-removed');
+                    });
+            };
 
 
-    }])
-    .controller('ManageBundlesCtrl', ['$scope', '$rootScope', 'BundlesListService', '$http', '$log', function ($scope, $rootScope, BundlesListService, $http, $log) {
+        }])
 
-        $scope.bundles = [];
-        $scope.bundleLoaded = false;
-        $scope.formData = {};
+    .controller('ManageBundlesCtrl', ['$scope', '$rootScope', 'BundlesListService', '$http', '$log', '$modal', '$interpolate',
+        function ($scope, $rootScope, BundlesListService, $http, $log, $modal, $interpolate) {
 
-        $scope.message = 'Please Wait...';
-        $scope.promise = null;
+            $scope.bundles = [];
+            $scope.bundleLoaded = false;
+            $scope.formData = {};
 
-        function fetch() {
+            $scope.message = 'Please Wait...';
+            $scope.promise = null;
 
-            $scope.promise = BundlesListService.fetch();
+            var confirmRemoveBundleExp = $interpolate('That you really want to remove the bundle <b>{{bundleIdentifier}}</b> ?');
 
-            $scope.promise
-                .success(function (result) {
-                    $scope.bundleLoaded = true;
-                    $scope.bundles = result.bundles;
-                });
+            function fetch() {
 
-        }
+                $scope.promise = BundlesListService.fetch();
 
-        // immediatelly fetch bundles list
-        fetch();
+                $scope.promise
+                    .success(function (result) {
+                        $scope.bundleLoaded = true;
+                        $scope.bundles = result.bundles;
+                    });
 
-        // when new app is added we want to refresh the bundles and apps list
-        $rootScope.$on('admin:app-added', fetch);
-        $rootScope.$on('admin:app-removed', fetch);
+            }
 
-        // when a bundle is added or removed we want to refresh
-        $rootScope.$on('admin:bundle-added', fetch);
-        $rootScope.$on('admin:bundle-remove', fetch);
+            // immediatelly fetch bundles list
+            fetch();
 
-        $scope.createBundle = function (bundle) {
+            // when new app is added we want to refresh the bundles and apps list
+            $rootScope.$on('admin:app-added', fetch);
+            $rootScope.$on('admin:app-removed', fetch);
 
-            $log.info('About to create a bew bundle: ' + $scope.formData.identifier + ', ' + $scope.formData.profile);
+            // when a bundle is added or removed we want to refresh
+            $rootScope.$on('admin:bundle-added', fetch);
+            $rootScope.$on('admin:bundle-remove', fetch);
 
-            return $http
-                .post('./admin/bundle', $.param($scope.formData))
-                .success(function () {
+            $scope.createBundle = function (bundle) {
 
-                    $scope.formData = {};
-                    $rootScope.$broadcast('admin:bundle-added');
-                    fetch();
+                $log.info('About to create a bew bundle: ' + $scope.formData.identifier + ', ' + $scope.formData.profile);
 
-                });
-        };
+                return $http
+                    .post('./admin/bundle', $.param($scope.formData))
+                    .success(function () {
 
-        $scope.removeBundle = function (bundle) {
-            console.log('About to remove bundle: ' + bundle.identifier);
+                        $scope.formData = {};
+                        $rootScope.$broadcast('admin:bundle-added');
+                        fetch();
 
-            $http
-                .delete('./admin/bundle/' + bundle.identifier + '/profile/' + bundle.profile, {
-                }).success(function () {
+                    });
+            };
 
-                    $rootScope.$broadcast('admin:bundle-added');
-                    fetch();
+            $scope.removeBundle = function (bundle) {
 
-                });
-        };
+                console.log('About to remove bundle: ' + bundle.identifier);
 
-    }])
+                $modal.open({
+                    templateUrl: '/partials/confirmation-modal.tpl.html',
+                    controller: 'ConfirmationModalCtrl',
+                    size: 'lg',
+                    resolve: {
+                        message: function () {
+                            return confirmRemoveBundleExp({bundleIdentifier: bundle.identifier});
+                        }
+                    }
+                }).result
+                    .then(function () {
+                        $http
+                            .delete('./admin/bundle/' + bundle.identifier + '/profile/' + bundle.profile, {
+                            }).success(function () {
+                                $rootScope.$broadcast('admin:bundle-added');
+                                fetch();
+                            });
+                    });
+
+            };
+
+        }])
+
     .controller('BundleListCompletionCtrl', ['$scope', '$http', function ($scope, $http) {
 
         $scope.getBundles = function (val) {
@@ -182,4 +209,19 @@ angular
             $scope.formData.profile = $item.profile;
         };
 
-    }]);
+    }])
+    .controller('ConfirmationModalCtrl', function ($scope, $modalInstance, message) {
+
+        $scope.confirmationMessage = message;
+
+        console.log(message);
+
+        $scope.ok = function () {
+            $modalInstance.close();
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+
+    });

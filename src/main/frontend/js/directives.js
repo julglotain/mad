@@ -52,7 +52,6 @@ angular
                 var modelSetter = model.assign;
 
                 inputFile.on('change', function () {
-                    console.log(inputFile);
                     scope.$apply(function () {
                         modelSetter(scope, inputFile[0].files[0]);
                     });

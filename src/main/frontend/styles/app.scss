@@ -161,3 +161,7 @@ input[readonly] {
 .has-feedback label~.form-control-feedback {
   top: 36px;
 }
+
+.no-desc {
+  color: rgba(0,0,0,.4);
+}

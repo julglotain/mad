@@ -12,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,9 +56,7 @@ public class AdminController {
             @RequestParam(value = "bundle") String bundle, @RequestParam(value = "profile") String profile,
             @RequestParam("app") MultipartFile app,
             @RequestParam(value = "smallIcon", required = false) MultipartFile smallIcon,
-            @RequestParam(value = "largeIcon", required = false) MultipartFile largeIcon, HttpServletResponse response) throws AppVersionAlreadyExistsException, FileWritingFailureException, InterruptedException {
-
-       Thread.sleep(3000);
+            @RequestParam(value = "largeIcon", required = false) MultipartFile largeIcon, HttpServletResponse response) throws AppVersionAlreadyExistsException, FileWritingFailureException {
 
         Pair<com.cacf.corporate.mobileappdownloader.entities.store.Bundle, AppVersion> newConf = new BindParametersToAppConf(name, version, desc, bundle, profile).invoke();
 
