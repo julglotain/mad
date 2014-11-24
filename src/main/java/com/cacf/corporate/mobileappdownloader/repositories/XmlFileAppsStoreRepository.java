@@ -113,4 +113,16 @@ public class XmlFileAppsStoreRepository implements AppsStoreRepository {
 
     }
 
+    @Override
+    public boolean checkIfBundleAlreadyExists(String identifier, String profile) {
+
+        for (Bundle bundle : getConfig().getBundles()) {
+
+            if (bundle.getIdentifier().equals(identifier)
+                    && bundle.getProfile().equals(profile)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

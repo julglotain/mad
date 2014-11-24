@@ -4,6 +4,7 @@ import com.cacf.corporate.mobileappdownloader.dto.store.Bundle;
 import com.cacf.corporate.mobileappdownloader.entities.store.AppVersion;
 import com.cacf.corporate.mobileappdownloader.services.AppVersionAlreadyExistsException;
 import com.cacf.corporate.mobileappdownloader.services.AppsStoreService;
+import com.cacf.corporate.mobileappdownloader.services.BundleAlreadyExistsException;
 import com.cacf.corporate.mobileappdownloader.services.FileWritingFailureException;
 import com.cacf.corporate.mobileappdownloader.utils.Pair;
 import org.slf4j.Logger;
@@ -81,7 +82,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/bundle", method = RequestMethod.POST)
-    public ResponseEntity<Map<String, Object>> createBundle(@RequestParam("identifier") String identifier, @RequestParam("profile") String profile) {
+    public ResponseEntity<Map<String, Object>> createBundle(@RequestParam("identifier") String identifier, @RequestParam("profile") String profile) throws BundleAlreadyExistsException {
 
         appsStoreService.createBundle(identifier, profile);
 

@@ -20,4 +20,6 @@ public interface AppsStoreRepository {
 
     boolean checkIfVersionAlreadyExists(Pair<Bundle, AppVersion> appConf);
 
+    boolean checkIfBundleAlreadyExists(String identifier, String profile);
+
 }

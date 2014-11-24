@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -125,6 +126,9 @@ public class DefaultAppsStoreService implements AppsStoreService {
     }
 
     private AppVersion createNewAppVersion(AppVersion appVersionBase, String appFilepath, String smallIconFilepath, String largeIconFilepath) {
+
+        // set date of upload
+        appVersionBase.setUploadDate(new Date());
 
         AppVersion.FilesURILocations uriLocations = new AppVersion.FilesURILocations();
 
@@ -256,7 +260,12 @@ public class DefaultAppsStoreService implements AppsStoreService {
     }
 
     @Override
-    public void createBundle(String identifier, String profile) {
+    public void createBundle(String identifier, String profile) throws BundleAlreadyExistsException{
+
+        // check if a version already exist for the bundle passed as arg
+        if (repository.checkIfBundleAlreadyExists(identifier, profile)) {
+            throw new BundleAlreadyExistsException();
+        }
 
         AppsStore storeConfig = load();
 

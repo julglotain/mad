@@ -1,4 +1,4 @@
-angular.module('mad.config', ['ngTouch','ngSanitize'])
+angular.module('mad.config', ['ngTouch', 'ngSanitize', 'ngAnimate'])
 
     .config(['$httpProvider', '$compileProvider', function ($httpProvider, $compileProvider) {
 

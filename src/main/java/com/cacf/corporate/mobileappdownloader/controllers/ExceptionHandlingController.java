@@ -1,10 +1,7 @@
 package com.cacf.corporate.mobileappdownloader.controllers;
 
 import com.cacf.corporate.mobileappdownloader.download.InvalidTokenException;
-import com.cacf.corporate.mobileappdownloader.services.AccessToProtectedResourceFailedException;
-import com.cacf.corporate.mobileappdownloader.services.AppVersionAlreadyExistsException;
-import com.cacf.corporate.mobileappdownloader.services.AppVersionNotFoundException;
-import com.cacf.corporate.mobileappdownloader.services.FileWritingFailureException;
+import com.cacf.corporate.mobileappdownloader.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -81,5 +78,14 @@ public class ExceptionHandlingController {
 
     }
 
+    @ExceptionHandler(BundleAlreadyExistsException.class)
+    public ResponseEntity<Map<String, Object>> bundleAlreadyExistsException(BundleAlreadyExistsException ex) {
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("result", "KO");
+        responseBody.put("message", "A bundle with this identifer and profile already exists.");
+        return new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE);
+
+    }
 
 }

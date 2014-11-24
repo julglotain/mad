@@ -40,7 +40,7 @@ public interface AppsStoreService {
 
     Set<Bundle> findBundlesByIdentifierPrefix(String idPrefix);
 
-    void createBundle(String identifier, String profile);
+    void createBundle(String identifier, String profile) throws BundleAlreadyExistsException;
 
     void removeBundle(String identifier, String profile);
 

@@ -93,7 +93,7 @@
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-success btn-block">Upload the new app</button>
                                         </div>
-                                        <div ng-show="uploadResultMessage.length" class="alert" ng-class="uploadResultClass"
+                                        <div ng-show="uploadResultMessage.length" class="alert animate-show-hide" ng-class="uploadResultClass"
                                              role="alert" ng-bind-html="uploadResultMessage"></div>
 
                                     </div>
@@ -112,11 +112,11 @@
                         <i class="fa fa-cube"></i> Manage apps
                     </tab-heading>
 
-                    <div class="inner-tab-content-wrapper" id="manage-apps-pane" ng-controller="ManageAppsCtrl">
+                    <div class="inner-tab-content-wrapper" id="manage-apps-pane" ng-controller="ManageAppsCtrl" ng-init="fetchBundlesList()">
 
                         <h3>All apps grouped by bundle</h3>
 
-                        <div cg-busy="{promise:promise}">
+                        <div cg-busy="{promise:promise, message:message}">
 
                             <accordion close-others="true">
                                 <accordion-group ng-repeat="bundle in bundles | orderBy:'identifier':false" is-open="status.open">
@@ -137,7 +137,7 @@
                                                 <td>{{version.name}}</td>
                                                 <td>{{version.number}}</td>
                                                 <td ng-class="{'no-desc': !version.description}">{{version.description || 'No description.'}}</td>
-                                                <td><a ng-href="#" ng-click="removeAppVersion(bundle,version)" class="remove-app-icon glyphicon glyphicon-trash"></a></td>
+                                                <td><a ng-href="#" ng-click="removeAppVersion(bundle, version)" class="remove-app-icon glyphicon glyphicon-trash"></a></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -161,7 +161,7 @@
                         <i class="fa fa-cubes"></i> Manage bundles
                     </tab-heading>
 
-                    <div class="inner-tab-content-wrapper row" id="manage-bundles-pane" ng-controller="ManageBundlesCtrl">
+                    <div class="inner-tab-content-wrapper row" id="manage-bundles-pane" ng-controller="ManageBundlesCtrl" ng-init="fetchBundlesList()">
 
                         <div class="col-md-5">
 
@@ -209,6 +209,9 @@
                                 </ul>
 
                                 <div ng-show="bundleLoaded && !bundles.length" class="alert alert-info" role="alert">No apps in this store yet.</div>
+
+                                <div ng-show="bundleCreationMessage.length" class="alert animate-show-hide" ng-class="bundleCreationResultClass"
+                                     role="alert" ng-bind-html="bundleCreationMessage"></div>
 
                             </div>
 

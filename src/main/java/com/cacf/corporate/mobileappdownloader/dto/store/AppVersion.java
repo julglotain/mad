@@ -1,5 +1,7 @@
 package com.cacf.corporate.mobileappdownloader.dto.store;
 
+import java.util.Date;
+
 /**
  * Created by jug on 10/11/2014.
  */
@@ -11,10 +13,19 @@ public class AppVersion {
 
     private String description;
 
+    private Date uploadDate;
+
+    public Date getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(Date uploadDate) {
+        this.uploadDate = uploadDate;
+    }
+
     private String manifestDownloadUrl;
 
     private String iconDownloadUrl;
-
 
     public AppVersion() {
     }

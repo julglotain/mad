@@ -3,6 +3,8 @@ package com.cacf.corporate.mobileappdownloader.entities.store;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
+import java.util.Date;
+
 /**
  * Created by jug on 06/11/2014.
  */
@@ -19,6 +21,16 @@ public class AppVersion implements Comparable<AppVersion> {
     // description of the app
     @XStreamAlias("desc")
     private String description;
+
+    public Date getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(Date uploadDate) {
+        this.uploadDate = uploadDate;
+    }
+
+    private Date uploadDate;
 
     public String getDescription() {
         return description;
