@@ -9,11 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://10.105.55.152/cacf/tools/mobile-application-downloader"
+    "url": "https://github.com/julglotain/ansible-vagrant-examples"
   },
   "author": "",
   "license": "BSD-2-Clause",
   "devDependencies": {
+    "bower": "^1.4.1",
     "gulp": "~3.8.10",
     "gulp-autoprefixer": "^1.0.1",
     "gulp-concat": "~2.4.1",

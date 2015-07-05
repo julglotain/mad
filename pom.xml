@@ -262,7 +262,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>bower</executable>
+                            <executable>./node_modules/bower/bin/bower</executable>
                             <workingDirectory>${project.basedir}</workingDirectory>
                             <arguments>
                                 <argument>install</argument>
