@@ -276,7 +276,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>gulp</executable>
+                            <executable>./node_modules/gulp/bin/gulp.js</executable>
                             <workingDirectory>${project.basedir}</workingDirectory>
                             <arguments>
                                 <argument>build</argument>
